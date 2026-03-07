@@ -16,7 +16,7 @@ describe('Welcome page', () => {
         <Welcome />
       </MemoryRouter>,
     );
-    expect(screen.getByText(/Dinner with... brings sit-down dinners/i)).toBeDefined();
+    expect(screen.getByText(/Turning strangers into neighbors, one dinner at a time/i)).toBeDefined();
   });
 });
 

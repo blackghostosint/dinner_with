@@ -1,5 +1,5 @@
 import { CalendarClock, Home, LogOut, Users } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase.js';
 
 const navItems = [
@@ -10,7 +10,6 @@ const navItems = [
 
 export default function BottomNav() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -21,16 +20,19 @@ export default function BottomNav() {
     <nav className="fixed bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center gap-1 rounded-3xl border border-amber-100 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
       {navItems.map((item) => {
         const Icon = item.icon;
-        const active = location.pathname === item.href;
         return (
-          <a
+          <NavLink
             key={item.label}
-            href={item.href}
-            className={`flex min-h-[44px] min-w-[44px] flex-col items-center justify-center px-3 text-[10px] uppercase tracking-[0.3em] transition-colors duration-150 cursor-pointer ${active ? 'text-amber-500' : 'text-slate-400 hover:text-slate-600'}`}
+            to={item.href}
+            className={({ isActive }) =>
+              `flex min-h-[44px] min-w-[44px] flex-col items-center justify-center px-3 text-[10px] uppercase tracking-[0.3em] transition-colors duration-150 cursor-pointer ${
+                isActive ? 'text-amber-500' : 'text-slate-400 hover:text-slate-600'
+              }`
+            }
           >
-            <Icon className={`h-5 w-5 ${active ? 'text-amber-500' : 'text-slate-500'}`} />
+            <Icon className="h-5 w-5 text-current" />
             {item.label}
-          </a>
+          </NavLink>
         );
       })}
       <button
