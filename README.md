@@ -2,33 +2,32 @@
 
 **Share a meal. Make a connection.**
 
-Dinner with... is a community-focused web application designed to connect hosts and guests for sit-down meals at nearby restaurants. Our mission is to reduce social isolation, especially among the elderly, by facilitating real-world, face-to-face connections.
+Dinner with... is a community-first app built to connect hosts and guests for sit-down dinners at nearby restaurants. The goal is to lessen social isolation, especially for elders, by encouraging real-world meals—not dating.
 
 > [!IMPORTANT]
-> **Dinner with... is for social connection — NOT dating.** We prioritize safety, respect, and community.
+> **Dinner with... is for social connection — NOT dating.** We prioritize consent, safety, and trust.
 
 ---
 
 ## 🚀 Hackathon MVP Status
-This project is currently being built as part of the **March 2026 Hackathon**.
+Built during the March 2026 Hackathon to prove the core flow.
 
-### Success Criteria:
-- [ ] User Sign Up / Login / Role Selection (Host vs Guest)
-- [ ] Profile Creation with Geolocation
-- [ ] Discovery of nearby opposite-role users (10-mile radius)
-- [ ] Invitation System (Host invites Guest to a specific restaurant)
-- [ ] RSVP System (Accept/Decline)
-- [ ] Safety Reporting & Trust Banners
+### Success Criteria
+- [ ] User sign up / login / role selection (host vs guest)
+- [ ] Profile creation with geolocation
+- [ ] Discovery of opposite-role folks within a 10-mile radius
+- [ ] Invitation creation from host → guest
+- [ ] RSVP flows (guest accept/decline, host cancel)
+- [ ] Safety reports + trust reminders across the app
 
 ---
 
 ## 🛠️ Tech Stack
-
 - **Frontend**: React 18 + Vite
-- **Styling**: Tailwind CSS (Mobile-First)
-- **Backend/Auth**: Supabase (Postgres + Managed Auth)
-- **Maps**: Leaflet.js + OpenStreetMap
-- **Mobile**: Progressive Web App (PWA) with Service Workers
+- **Styling**: Tailwind CSS (mobile-first)
+- **Backend/Auth**: Supabase (Postgres + managed auth)
+- **Maps**: Leaflet + OpenStreetMap
+- **Mobile**: Progressive Web App (service worker + install banner)
 - **Testing**: Vitest + React Testing Library
 
 ---
@@ -36,34 +35,50 @@ This project is currently being built as part of the **March 2026 Hackathon**.
 ## 📦 Getting Started
 
 ### Prerequisites
-- Node.js (v18+)
+- Node.js (v18+ recommended)
 - npm
 
 ### Installation
 ```bash
-# Clone the repository
+# Clone the repo
 git clone https://github.com/blackghostosint/dinner_with.git
 cd dinner_with
 
-# Install dependencies (once scaffolded)
+# Install dependencies
 npm install
 ```
 
-### Development
+### Development Workflow
 ```bash
-# Run local dev server
+# Run the dev server
 npm run dev
 
-# Run tests
+# Run the test suite
 npm test
 ```
 
 ---
 
 ## 🛡️ Safety & Trust
-- **Mandatory Onboarding**: Users must complete their profile and consent to community standards before using the app.
-- **Trust Banners**: Present on every authenticated page to remind users of the app's purpose.
-- **Reporting System**: In-app reporting for any behavior that violates our social connection guidelines.
+- Mandatory onboarding and consent before guests can browse nearby hosts.
+- Trust banners remind users that Dinner with... is platonic.
+- Safety reports feed into Supabase to flag concerning behavior.
+
+---
+
+## ⚙️ Environment
+Copy `.env.example` (or create a `.env`) with:
+```
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-public-anon-key
+```
+Without both values, auth, profile syncing, invitations, and reporting are disabled.
+
+## 🧾 Supabase schema
+The app relies on four tables: `profiles`, `restaurants`, `invitations`, and `safety_reports`. Each table enables row level security so users can only update their own rows while still reading public discovery data. The spec file (`TASK-010 Dinner with app project - V4 React-Vite Spec.md`) contains the exact SQL statements and seeded demo data (hosts, guests, restaurants, invitations).
+
+## 📱 PWA & assets
+`public/manifest.json`, `public/sw.js`, and `public/icons/*` are preconfigured so the site can be installed as a PWA. `src/main.jsx` registers the service worker and stores the `beforeinstallprompt` event for a custom install experience.
 
 ---
 

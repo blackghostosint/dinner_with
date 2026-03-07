@@ -1,0 +1,28 @@
+import React from 'react';
+import { describe, expect, it } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import Welcome from '../pages/Welcome.jsx';
+import { haversineDistance } from '../lib/utils.js';
+import { MemoryRouter } from 'react-router-dom';
+
+if (typeof window !== 'undefined' && !window.scrollTo) {
+  window.scrollTo = () => {};
+}
+
+describe('Welcome page', () => {
+  it('renders the hero copy', () => {
+    render(
+      <MemoryRouter>
+        <Welcome />
+      </MemoryRouter>,
+    );
+    expect(screen.getByText(/Dinner with... brings sit-down dinners/i)).toBeDefined();
+  });
+});
+
+describe('utils', () => {
+  it('returns zero distance for identical coordinates', () => {
+    const distance = haversineDistance(37.7749, -122.4194, 37.7749, -122.4194);
+    expect(distance).toBeCloseTo(0, 3);
+  });
+});
