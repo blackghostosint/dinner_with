@@ -75,7 +75,9 @@ VITE_SUPABASE_ANON_KEY=your-public-anon-key
 Without both values, auth, profile syncing, invitations, and reporting are disabled.
 
 ## 🧾 Supabase schema
-The app relies on four tables: `profiles`, `restaurants`, `invitations`, and `safety_reports`. Each table enables row level security so users can only update their own rows while still reading public discovery data. The spec file (`TASK-010 Dinner with app project - V4 React-Vite Spec.md`) contains the exact SQL statements and seeded demo data (hosts, guests, restaurants, invitations).
+The app relies on four tables: `profiles`, `restaurants`, `invitations`, and `safety_reports`. Each table enables row level security so users can only update their own rows while still reading public discovery data. The spec file (`TASK-010 Dinner with app project - V4 React-Vite Spec.md`) contains the SQL plus seeded data for the demo.
+
+Run `scripts/apply_supabase_schema.py` (with `SUPABASE_DB_URL` or `--connection`/`--connection-file`) to apply the schema and optionally seed restaurants plus demo hosts/guests. Supply `--seed-restaurants` and `--seed-demo --host-ids <ids> --guest-ids <ids>` once you have real auth users in that project. This script keeps schema/seed SQL under version control without hard-coding credentials.
 
 ## 📱 PWA & assets
 `public/manifest.json`, `public/sw.js`, and `public/icons/*` are preconfigured so the site can be installed as a PWA. `src/main.jsx` registers the service worker and stores the `beforeinstallprompt` event for a custom install experience.
