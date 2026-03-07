@@ -14,22 +14,38 @@ export function useInvitations(userId) {
     }
 
     setLoading(true);
-    supabase
-      .from('invitations')
-      .select('*')
-      .or(`host_user_id.eq.${userId},guest_user_id.eq.${userId}`)
-      .then(({ data, error: fetchError }) => {
-        if (fetchError) {
-          setError(fetchError);
-          setInvitations([]);
-        } else {
-          const sorted = (data ?? []).sort((a, b) => {
-            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-          });
-          setInvitations(sorted);
-        }
-        setLoading(false);
-      });
+    const fetchAll = async () => {
+      const { data: invData, error: invError } = await supabase
+        .from('invitations')
+        .select('*, restaurant:restaurants(name, address)')
+        .or(`host_user_id.eq.${userId},guest_user_id.eq.${userId}`);
+
+      if (invError) { setError(invError); setInvitations([]); setLoading(false); return; }
+
+      const userIds = [...new Set(
+        (invData ?? []).flatMap((inv) => [inv.host_user_id, inv.guest_user_id])
+      )];
+
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('id, name, city, state')
+        .in('id', userIds);
+
+      const profileMap = Object.fromEntries((profileData ?? []).map((p) => [p.id, p]));
+
+      const merged = (invData ?? [])
+        .map((inv) => ({
+          ...inv,
+          host: profileMap[inv.host_user_id] ?? null,
+          guest: profileMap[inv.guest_user_id] ?? null,
+        }))
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      setInvitations(merged);
+      setLoading(false);
+    };
+
+    fetchAll();
   }, [userId]);
 
   const updateStatus = async (invitationId, status) => {
