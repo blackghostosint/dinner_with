@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth.js';
 
 export default function Welcome() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,13 @@ export default function Welcome() {
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const howItWorksRef = useRef(null);
+
+  if (user) {
+    navigate('/nearby', { replace: true });
+    return null;
+  }
 
   const handleSignIn = async (event) => {
     event.preventDefault();
@@ -32,14 +40,12 @@ export default function Welcome() {
   return (
     <Layout>
       <div className="mx-auto max-w-3xl space-y-8">
-        <p className="text-xs uppercase tracking-[0.4em] text-amber-500">V4 beta</p>
-        <h1 className="text-4xl font-semibold text-slate-900 sm:text-5xl">
+<h1 className="text-4xl font-semibold text-slate-900 sm:text-5xl">
           Dinner with... brings sit-down dinners to neighbors who crave company.
         </h1>
         <p className="text-lg text-slate-600">
-          This community-first experience is for hosts and guests who want to break
-          bread, not break hearts. We surface nearby opposite-role members for
-          platonic dinner matches.
+          This community-first experience is for people who want to break bread and
+          create connections. We connect nearby members for platonic dinner matches.
         </p>
         <div className="flex flex-wrap gap-4">
           <button
@@ -49,7 +55,7 @@ export default function Welcome() {
             Get started
           </button>
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => howItWorksRef.current?.scrollIntoView({ behavior: 'smooth' })}
             className="rounded-2xl border border-slate-200 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-slate-600 transition hover:border-slate-400"
           >
             Scroll for details
@@ -97,6 +103,53 @@ export default function Welcome() {
               <p className="mt-2 font-semibold text-slate-900">{tile.value}</p>
             </div>
           ))}
+        </div>
+
+        <div ref={howItWorksRef} className="space-y-6 border-t border-slate-200 pt-8">
+          <div>
+            <p className="text-xs uppercase tracking-[0.4em] text-amber-500">How it works</p>
+            <h2 className="mt-2 text-2xl font-semibold text-slate-900">Four simple steps to a shared meal</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              {
+                step: '01',
+                title: 'Create your profile',
+                body: 'Sign up, choose your role as Host or Guest, and share your location so we can find people nearby.',
+              },
+              {
+                step: '02',
+                title: 'Discover nearby members',
+                body: 'See Hosts or Guests within 10 miles on a live map. Tap any profile to learn more about them.',
+              },
+              {
+                step: '03',
+                title: 'Send or receive a dinner invite',
+                body: 'Hosts pick a sit-down restaurant and send an invite with a message and proposed time.',
+              },
+              {
+                step: '04',
+                title: 'Confirm and show up',
+                body: 'Guests accept the invite. Both parties see the restaurant, time, and each other\'s details. Just show up and enjoy.',
+              },
+            ].map((item) => (
+              <div key={item.step} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <p className="text-3xl font-bold text-amber-200">{item.step}</p>
+                <p className="mt-2 font-semibold text-slate-900">{item.title}</p>
+                <p className="mt-1 text-sm text-slate-500">{item.body}</p>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-2xl bg-amber-50 p-5 text-sm text-amber-800 border border-amber-100">
+            <p className="font-semibold">Community first. Always.</p>
+            <p className="mt-1">Dinner with... is for platonic connection — neighbors sharing a meal, nothing more. Safety reports are reviewed and consent is required at every step.</p>
+          </div>
+          <button
+            onClick={() => navigate('/onboarding/role')}
+            className="w-full rounded-2xl bg-amber-500 py-4 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 hover:bg-amber-600"
+          >
+            Get started
+          </button>
         </div>
       </div>
     </Layout>

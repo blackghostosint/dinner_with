@@ -130,7 +130,7 @@ export default function OnboardingProfile() {
             <button
               type="button"
               onClick={handleLoc}
-              className="rounded-2xl bg-slate-900 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white"
+              className="rounded-2xl bg-amber-500 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white hover:bg-amber-600"
             >
               Allow location
             </button>

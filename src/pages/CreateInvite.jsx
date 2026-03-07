@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
@@ -12,9 +12,23 @@ export default function CreateInvite() {
   const [proposedTime, setProposedTime] = useState('');
   const [consent, setConsent] = useState(true);
   const [feedback, setFeedback] = useState('');
+  const [guestName, setGuestName] = useState('');
+  const [restaurantName, setRestaurantName] = useState('');
 
   const guestId = searchParams.get('guestId');
   const restaurantId = searchParams.get('restaurantId');
+
+  useEffect(() => {
+    if (!supabase) return;
+    if (guestId) {
+      supabase.from('profiles').select('name').eq('id', guestId).single()
+        .then(({ data }) => { if (data?.name) setGuestName(data.name); });
+    }
+    if (restaurantId) {
+      supabase.from('restaurants').select('name').eq('id', restaurantId).single()
+        .then(({ data }) => { if (data?.name) setRestaurantName(data.name); });
+    }
+  }, [guestId, restaurantId]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -40,9 +54,20 @@ export default function CreateInvite() {
   return (
     <Layout showTrust>
       <div className="space-y-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-slate-600"
+        >
+          ← Back
+        </button>
         <header>
           <p className="text-xs uppercase tracking-[0.4em] text-amber-500">New invite</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Create a sit-down invite</h1>
+          <h1 className="text-3xl font-semibold text-slate-900">
+            {guestName ? `Invite ${guestName}` : 'Create a sit-down invite'}
+          </h1>
+          {restaurantName && (
+            <p className="mt-1 text-sm text-slate-500">at <span className="font-medium text-slate-700">{restaurantName}</span></p>
+          )}
         </header>
         <form className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" onSubmit={handleSubmit}>
           <label className="text-sm uppercase tracking-[0.4em] text-slate-500">
