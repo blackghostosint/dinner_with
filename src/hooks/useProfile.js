@@ -27,7 +27,7 @@ export function useProfile(userId) {
   }, [userId]);
 
   const hasCompletedProfile = useMemo(
-    () => Boolean(profile?.profile_completed_at) || Boolean(profile?.name && profile?.role),
+    () => profile !== null && (Boolean(profile?.profile_completed_at) || Boolean(profile?.name)),
     [profile],
   );
 
