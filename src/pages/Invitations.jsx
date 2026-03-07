@@ -4,6 +4,8 @@ import InviteCard from '../components/InviteCard.jsx';
 import BottomNav from '../components/BottomNav.jsx';
 import { useAuth } from '../hooks/useAuth.js';
 import { useInvitations } from '../hooks/useInvitations.js';
+import { useToast } from '../context/ToastContext.jsx';
+import confetti from 'canvas-confetti';
 
 const TABS = ['pending', 'accepted', 'declined', 'cancelled'];
 
@@ -11,13 +13,34 @@ export default function Invitations() {
   const { user } = useAuth();
   const { invitations, loading, updateStatus, sharePhone } = useInvitations(user?.id);
   const [activeTab, setActiveTab] = useState('pending');
+  const { addToast } = useToast();
 
-  const handleStatus = async (id, status) => {
-    try { await updateStatus(id, status); } catch (e) { console.error(e); }
+  const handleStatus = async (invite, status) => {
+    try {
+      await updateStatus(invite.id, status);
+      if (status === 'accepted') {
+        confetti({
+          particleCount: 60,
+          spread: 90,
+          origin: { y: 0.6 },
+          ticks: 120,
+        });
+        const partnerName = invite.host_user_id === user?.id ? invite.guest?.name : invite.host?.name;
+        addToast(`Dinner confirmed with ${partnerName ?? 'your dinner mate'}!`);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  const handleSharePhone = async (id, role) => {
-    try { await sharePhone(id, role); } catch (e) { console.error(e); }
+  const handleSharePhone = async (invite, role) => {
+    try {
+      await sharePhone(invite.id, role);
+      const partnerName = role === 'host' ? invite.guest?.name : invite.host?.name;
+      addToast(`Shared contact with ${partnerName ?? 'your dinner mate'}.`);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const filtered = invitations.filter((inv) => inv.status === activeTab);
@@ -71,13 +94,13 @@ export default function Invitations() {
                   {invite.status === 'pending' && isGuest && (
                     <>
                       <button
-                        onClick={() => handleStatus(invite.id, 'accepted')}
+                        onClick={() => handleStatus(invite, 'accepted')}
                         className="rounded-2xl bg-emerald-500 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-white"
                       >
                         Accept
                       </button>
                       <button
-                        onClick={() => handleStatus(invite.id, 'declined')}
+                        onClick={() => handleStatus(invite, 'declined')}
                         className="rounded-2xl border border-slate-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-slate-500"
                       >
                         Decline
@@ -86,7 +109,7 @@ export default function Invitations() {
                   )}
                   {invite.status === 'pending' && isHost && (
                     <button
-                      onClick={() => handleStatus(invite.id, 'cancelled')}
+                      onClick={() => handleStatus(invite, 'cancelled')}
                       className="rounded-2xl border border-red-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-red-500"
                     >
                       Cancel
@@ -94,7 +117,7 @@ export default function Invitations() {
                   )}
                   {invite.status === 'accepted' && (isHost || isGuest) && (
                     <button
-                      onClick={() => handleStatus(invite.id, 'cancelled')}
+                      onClick={() => handleStatus(invite, 'cancelled')}
                       className="rounded-2xl border border-red-200 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-red-500"
                     >
                       Cancel
@@ -110,12 +133,12 @@ export default function Invitations() {
                         {invite.host_shared_phone ? (
                           <p className="text-slate-500">You shared your number with {invite.guest?.name}.</p>
                         ) : (
-                          <button
-                            onClick={() => handleSharePhone(invite.id, 'host')}
-                            className="min-h-[44px] rounded-2xl border-2 border-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-amber-700 hover:bg-amber-100 transition-all duration-200 cursor-pointer"
-                          >
-                            Share my number with {invite.guest?.name}
-                          </button>
+                        <button
+                          onClick={() => handleSharePhone(invite, 'host')}
+                          className="min-h-[44px] rounded-2xl border-2 border-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-amber-700 hover:bg-amber-100 transition-all duration-200 cursor-pointer"
+                        >
+                          Share my number with {invite.guest?.name}
+                        </button>
                         )}
                         {invite.guest_shared_phone && invite.guest?.phone && (
                           <p className="font-semibold text-slate-700">{invite.guest?.name}: <a href={`tel:${invite.guest.phone}`} className="text-amber-600 underline">{invite.guest.phone}</a></p>
@@ -130,12 +153,12 @@ export default function Invitations() {
                         {invite.guest_shared_phone ? (
                           <p className="text-slate-500">You shared your number with {invite.host?.name}.</p>
                         ) : (
-                          <button
-                            onClick={() => handleSharePhone(invite.id, 'guest')}
-                            className="min-h-[44px] rounded-2xl border-2 border-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-amber-700 hover:bg-amber-100 transition-all duration-200 cursor-pointer"
-                          >
-                            Share my number with {invite.host?.name}
-                          </button>
+                        <button
+                          onClick={() => handleSharePhone(invite, 'guest')}
+                          className="min-h-[44px] rounded-2xl border-2 border-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-amber-700 hover:bg-amber-100 transition-all duration-200 cursor-pointer"
+                        >
+                          Share my number with {invite.host?.name}
+                        </button>
                         )}
                         {invite.host_shared_phone && invite.host?.phone && (
                           <p className="font-semibold text-slate-700">{invite.host?.name}: <a href={`tel:${invite.host.phone}`} className="text-amber-600 underline">{invite.host.phone}</a></p>
