@@ -106,6 +106,8 @@ Dinner with... is built on the premise that trust must be earned and protected.
 
 ## Built During
 
-March 2026 Hackathon — 3 days, one idea, one question:
+[March 2026 Hackathon](https://www.skool.com/hackathon/about?ref=826881671d1f46f8947262af2de90128) — 3 days, one idea, one question:
 
 *What if a neighbor just invited someone to dinner?*
+
+Thank you to [Marcin Teodoru](https://marcinai.com/) and [Sabrina Ramonov](https://github.com/SabrinaRamonov) for creating the opportunity and the community that made this possible.
