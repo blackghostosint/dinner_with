@@ -109,8 +109,8 @@ export default function UserProfile() {
         <div className="rounded-3xl border border-slate-100 bg-slate-50 p-6">
           <p className="text-xs text-slate-400">
             {currentProfile?.role === 'host'
-              ? "You'll choose a restaurant on the next step."
-              : 'Hosts can invite you to a sit-down meal at a nearby restaurant.'}
+              ? "You'll pick a local restaurant on the next step. You cover the meal — the real gift is the conversation."
+              : 'This host may invite you to a local restaurant. The host covers the meal — just show up and enjoy the company.'}
           </p>
         </div>
 

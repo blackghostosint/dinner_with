@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom';
 const roles = [
   {
     role: 'host',
-    title: 'Open your home table',
-    description: 'Host a sit-down meal at a reserved restaurant and invite a guest.',
+    title: 'I want to host',
+    description: 'Invite someone from your community to a local restaurant. You cover the meal — the real gift is conversation and connection.',
   },
   {
     role: 'guest',
-    title: 'Join a friendly table',
-    description: 'Find a host near you who wants company for dinner.',
+    title: 'I would enjoy company',
+    description: 'Accept a dinner invitation from a host near you. No cost, no pressure — just a shared meal and good conversation.',
   },
 ];
 
@@ -45,8 +45,7 @@ export default function OnboardingRole() {
         </div>
         <div className="rounded-2xl border border-amber-200 bg-white/80 p-4 text-sm text-slate-600 shadow-sm">
           <p>
-            Hosts can create invitations, guests can accept them. We always showcase the
-            opposite role nearby.
+            Hosts invite guests to a local restaurant and cover the meal. Guests are anyone who would enjoy company — seniors, newcomers, or simply someone who would rather not eat alone.
           </p>
           <p className="mt-1 text-xs uppercase tracking-[0.4em] text-amber-500">
             {current?.description}

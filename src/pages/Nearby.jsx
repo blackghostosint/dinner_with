@@ -50,8 +50,8 @@ export default function Nearby() {
           <h1 className="text-3xl font-semibold text-slate-900">People nearby</h1>
           <p className="text-sm text-slate-500">
             {profile?.role === 'host'
-              ? 'Choose a guest to invite.'
-              : 'Accept a dinner invite from a host.'}
+              ? 'Choose someone from your community to invite to dinner.'
+              : 'A host near you will cover the meal — just bring yourself.'}
           </p>
         </header>
         <div className="flex flex-wrap gap-2">

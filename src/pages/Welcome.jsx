@@ -46,8 +46,7 @@ export default function Welcome() {
           className="h-64 w-auto"
         />
         <p className="text-lg text-slate-600">
-          This community-first experience is for people who want to break bread and
-          create connections. We connect nearby members for platonic dinner matches.
+          Turning strangers into neighbors, one dinner at a time. Host families invite guests from their community to a local restaurant — offering conversation, warmth, and a seat at the table.
         </p>
         <div className="flex flex-wrap gap-4">
           <button
@@ -93,9 +92,9 @@ export default function Welcome() {
         </form>
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { label: 'Community focus', value: 'Safety-first, no dating.' },
-            { label: 'Radius', value: '10 miles' },
-            { label: 'Live map', value: 'Leaflet + OpenStreetMap' },
+            { label: 'Who it\'s for', value: 'Seniors, newcomers, anyone eating alone.' },
+            { label: 'Radius', value: 'Within 10 miles' },
+            { label: 'The host pays', value: 'The meal is on the host.' },
           ].map((tile) => (
             <div
               key={tile.label}
@@ -117,22 +116,22 @@ export default function Welcome() {
               {
                 step: '01',
                 title: 'Create your profile',
-                body: 'Sign up, choose your role as Host or Guest, and share your location so we can find people nearby.',
+                body: 'Sign up as a Host or Guest and share your location. Hosts are families or individuals who want to give back. Guests are anyone who would enjoy company at dinner.',
               },
               {
                 step: '02',
-                title: 'Discover nearby members',
-                body: 'See Hosts or Guests within 10 miles on a live map. Tap any profile to learn more about them.',
+                title: 'Discover people nearby',
+                body: 'See members within 10 miles on a live map. Hosts see potential guests — seniors, newcomers, or anyone who would appreciate a shared meal.',
               },
               {
                 step: '03',
-                title: 'Send or receive a dinner invite',
-                body: 'Hosts pick a sit-down restaurant and send an invite with a message and proposed time.',
+                title: 'Send a dinner invite',
+                body: 'Hosts choose a local sit-down restaurant and send an invite. The host covers the meal — the real gift is the conversation and connection.',
               },
               {
                 step: '04',
-                title: 'Confirm and show up',
-                body: 'Guests accept the invite. Both parties see the restaurant, time, and each other\'s details. Just show up and enjoy.',
+                title: 'Share the table',
+                body: 'Guests accept and both parties get the details. Show up, share a meal, and turn a stranger into a neighbor.',
               },
             ].map((item) => (
               <div key={item.step} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -143,8 +142,8 @@ export default function Welcome() {
             ))}
           </div>
           <div className="rounded-2xl bg-amber-50 p-5 text-sm text-amber-800 border border-amber-100">
-            <p className="font-semibold">Community first. Always.</p>
-            <p className="mt-1">Dinner with... is for platonic connection — neighbors sharing a meal, nothing more. Safety reports are reviewed and consent is required at every step.</p>
+            <p className="font-semibold">Not charity. Not dating. Just a shared table.</p>
+            <p className="mt-1">Every night, millions of people eat alone — elderly, recently widowed, new to the city, or simply without company. Dinner with... gives everyone a seat at the table.</p>
           </div>
           <button
             onClick={() => navigate('/onboarding/role')}
