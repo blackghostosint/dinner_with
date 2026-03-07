@@ -491,7 +491,20 @@ Create seed data and demo prep:
 
 ---
 
+## Progress log
+
+### Completed (Mar 6–7 2026)
+- **Supabase seeded**: Schema, RLS policies, 20 restaurants, demo profiles/invitations/safety report applied via `scripts/supabase_manual.sql` in Supabase Dashboard SQL Editor (IPv6 workaround)
+- **Demo accounts**: `demohost@dinnerwith.app` / `demoguest@dinnerwith.app` (password: `demo123456`); email confirmation disabled in Supabase Auth settings
+- **Tailwind v4 fixed**: Switched to `@tailwindcss/vite` plugin + `@import "tailwindcss"` in index.css
+- **Auth**: Added password-based sign-in to Welcome page alongside magic link
+- **Nearby map**: Custom Leaflet divIcons — blue person (you), amber person (nearby users), green fork (restaurants); fixed Supabase numeric-as-string lat/lng with `parseFloat`; map height 500px; self marker z-index on top
+- **UserProfile page**: Centered avatar, distance display, amber Invite to dinner button, back button, report button disables after submit
+- **Invitations page**: Status tabs (Pending/Accepted/Declined/Cancelled) with counts; role-aware actions (guests accept/decline, hosts cancel); cards show restaurant name, other person's name + location, message
+
 ## Current blockers & next steps
 
-- **Supabase schema + demo data**: Schema/policy/seed SQL is ready in `scripts/apply_supabase_schema.py`, but the published database (`db.qnnrpneuireiyefuzbcu.supabase.co`) currently resolves only to an IPv6 address that this environment cannot reach (`psycopg.OperationalError: failed to resolve host … getaddrinfo failed`). Run the script from a network with IPv6 connectivity or execute the SQL via the Supabase dashboard so the tables, policies, seeded restaurants, demo hosts/guests, invitations, and safety report exist before running the app.
-- **Next steps**: Confirm `.env` points to the Supabase project once seeded, restart `npm run dev`, and exercise the Nearby + invitations flows with the seeded demo accounts (`demo-host@example.com`/`demo-guest@example.com`). If issues persist, capture the errors/screenshots and report them so fixes can be prioritized quickly.
+- **Restaurant picker**: Still uses 3 hardcoded restaurants — needs to fetch from `public.restaurants` in Supabase
+- **CreateInvite page**: Not yet tested end-to-end from host flow
+- **PWA icons**: `public/icons/icon-192.png` and `icon-512.png` missing — generates console warning; use realfavicongenerator.net to create them
+- **`apple-mobile-web-app-capable` deprecation**: Minor warning in `index.html` — replace with `mobile-web-app-capable`
