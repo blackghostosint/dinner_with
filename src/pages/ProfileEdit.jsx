@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout.jsx';
+import BottomNav from '../components/BottomNav.jsx';
 import { useAuth } from '../hooks/useAuth.js';
 import { useProfile, upsertProfile } from '../hooks/useProfile.js';
 
@@ -80,13 +81,14 @@ export default function ProfileEdit() {
           </label>
           <button
             type="submit"
-            className="w-full rounded-2xl bg-slate-900 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white"
+            className="w-full rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white hover:bg-amber-600"
           >
             Save changes
           </button>
           {feedback && <p className="text-xs text-slate-500">{feedback}</p>}
         </form>
       </div>
+      <BottomNav />
     </Layout>
   );
 }

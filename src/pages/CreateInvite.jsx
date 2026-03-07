@@ -69,7 +69,7 @@ export default function CreateInvite() {
               checked={consent}
               onChange={(event) => setConsent(event.target.checked)}
             />
-            I confirm thisDinner with... is for community connection only.
+            I confirm this Dinner with... invite is for community connection only.
           </label>
           <button
             type="submit"
