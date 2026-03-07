@@ -2,11 +2,19 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
+import { useAuth } from '../hooks/useAuth.js';
 
 export default function OnboardingSignUp() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const role = searchParams.get('role') ?? 'guest';
+  const { user } = useAuth();
+
+  // Already logged in — skip account creation
+  if (user) {
+    navigate(`/onboarding/profile?role=${role}`, { replace: true });
+    return null;
+  }
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -76,8 +84,8 @@ export default function OnboardingSignUp() {
 
           <button
             type="submit"
-            disabled={loading || !email || !password}
-            className="min-h-[52px] w-full rounded-2xl bg-amber-500 px-6 py-3 font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 disabled:opacity-40 cursor-pointer"
+            disabled={loading}
+            className="min-h-[52px] w-full rounded-2xl bg-amber-500 px-6 py-3 font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 disabled:opacity-60 cursor-pointer"
           >
             {loading ? 'Creating account...' : 'Create account →'}
           </button>
