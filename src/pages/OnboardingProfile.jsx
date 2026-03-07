@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '../components/Layout.jsx';
 import { useAuth } from '../hooks/useAuth.js';
 import { upsertProfile } from '../hooks/useProfile.js';
+import { detectLocation } from '../lib/utils.js';
 
 export default function OnboardingProfile() {
   const [searchParams] = useSearchParams();
@@ -21,44 +22,22 @@ export default function OnboardingProfile() {
   const role = searchParams.get('role') ?? 'guest';
   const locationText = useMemo(() => {
     if (formValues.city || formValues.state) {
-      return `📍 Detected: ${formValues.city || 'City'}, ${formValues.state || 'State'}`;
+      return `Detected: ${formValues.city || 'City'}, ${formValues.state || 'State'}`;
     }
-    return 'Waiting for location...';
+    return 'Detecting...';
   }, [formValues.city, formValues.state]);
 
   const handleLoc = () => {
-    if (!navigator.geolocation) {
-      setLocationStatus('unsupported');
-      return;
-    }
-    setLocationStatus('pending');
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude, longitude } = pos.coords;
+    detectLocation(
+      ({ lat, lng, city, state }) =>
         setFormValues((prev) => ({
           ...prev,
-          lat: latitude,
-          lng: longitude,
-        }));
-        try {
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
-            {
-              headers: { 'User-Agent': 'DinnerWithApp/1.0' },
-            },
-          );
-          const data = await response.json();
-          setFormValues((prev) => ({
-            ...prev,
-            city: data.address?.city ?? data.address?.town ?? prev.city,
-            state: data.address?.state ?? prev.state,
-          }));
-          setLocationStatus('granted');
-        } catch (err) {
-          setLocationStatus('failed');
-        }
-      },
-      () => setLocationStatus('denied'),
+          lat,
+          lng,
+          city: city || prev.city,
+          state: state || prev.state,
+        })),
+      setLocationStatus,
     );
   };
 
@@ -135,7 +114,7 @@ export default function OnboardingProfile() {
               Allow location
             </button>
             <p className="text-xs text-slate-500 uppercase tracking-[0.4em]">
-              {locationStatus === 'granted' ? locationText : 'Manual city/state if denied'}
+              {locationStatus === 'pending' ? 'Detecting...' : locationStatus === 'granted' ? locationText : 'Or enter city/state below'}
             </p>
           </div>
           <div className="mt-4 grid gap-4 md:grid-cols-2">

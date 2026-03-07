@@ -3,6 +3,7 @@ import Layout from '../components/Layout.jsx';
 import BottomNav from '../components/BottomNav.jsx';
 import { useAuth } from '../hooks/useAuth.js';
 import { useProfile, upsertProfile } from '../hooks/useProfile.js';
+import { detectLocation } from '../lib/utils.js';
 
 export default function ProfileEdit() {
   const { user } = useAuth();
@@ -20,31 +21,16 @@ export default function ProfileEdit() {
   const [locationStatus, setLocationStatus] = useState('idle');
 
   const handleLoc = () => {
-    if (!navigator.geolocation) { setLocationStatus('unsupported'); return; }
-    setLocationStatus('pending');
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude, longitude } = pos.coords;
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
-            { headers: { 'User-Agent': 'DinnerWithApp/1.0' } },
-          );
-          const data = await res.json();
-          setFormValues((prev) => ({
-            ...prev,
-            lat: latitude,
-            lng: longitude,
-            city: data.address?.city ?? data.address?.town ?? prev.city,
-            state: data.address?.state ?? prev.state,
-          }));
-          setLocationStatus('granted');
-        } catch {
-          setFormValues((prev) => ({ ...prev, lat: latitude, lng: longitude }));
-          setLocationStatus('granted');
-        }
-      },
-      () => setLocationStatus('denied'),
+    detectLocation(
+      ({ lat, lng, city, state }) =>
+        setFormValues((prev) => ({
+          ...prev,
+          lat,
+          lng,
+          city: city || prev.city,
+          state: state || prev.state,
+        })),
+      setLocationStatus,
     );
   };
 
