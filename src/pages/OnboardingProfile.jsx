@@ -44,6 +44,21 @@ export default function OnboardingProfile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!user) return;
+    let { lat, lng } = formValues;
+    // Auto-geocode city/state if coordinates are missing
+    if ((!lat || !lng) && formValues.city && formValues.state) {
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(formValues.city)}&state=${encodeURIComponent(formValues.state)}&country=US&format=json&limit=1`,
+          { headers: { 'User-Agent': 'DinnerWithApp/1.0' } },
+        );
+        const data = await res.json();
+        if (data[0]) {
+          lat = parseFloat(data[0].lat);
+          lng = parseFloat(data[0].lon);
+        }
+      } catch { /* proceed without coords */ }
+    }
     try {
       await upsertProfile({
         id: user.id,
@@ -53,8 +68,8 @@ export default function OnboardingProfile() {
         phone: formValues.phone,
         city: formValues.city,
         state: formValues.state,
-        lat: formValues.lat,
-        lng: formValues.lng,
+        lat,
+        lng,
         role,
         profile_completed_at: new Date().toISOString(),
       });

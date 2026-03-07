@@ -51,12 +51,23 @@ export default function ProfileEdit() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!user) return;
+    let { lat, lng } = formValues;
+    // Auto-geocode city/state if coordinates are missing
+    if ((!lat || !lng) && formValues.city && formValues.state) {
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(formValues.city)}&state=${encodeURIComponent(formValues.state)}&country=US&format=json&limit=1`,
+          { headers: { 'User-Agent': 'DinnerWithApp/1.0' } },
+        );
+        const data = await res.json();
+        if (data[0]) {
+          lat = parseFloat(data[0].lat);
+          lng = parseFloat(data[0].lon);
+        }
+      } catch { /* proceed without coords */ }
+    }
     try {
-      await upsertProfile({
-        id: user.id,
-        email: user.email,
-        ...formValues,
-      });
+      await upsertProfile({ id: user.id, email: user.email, ...formValues, lat, lng });
       setFeedback('Profile updated. Map will reflect your new location.');
     } catch (error) {
       setFeedback('Unable to update profile.');
