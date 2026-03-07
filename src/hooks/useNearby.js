@@ -21,7 +21,7 @@ export function useNearby({ role, homeLocation, currentUserId }) {
 
     supabase
       .from('profiles')
-      .select('*')
+      .select('id, name, bio, lat, lng, city, state, role')
       .eq('role', targetRole)
       .not('id', 'eq', currentUserId)
       .then(({ data, error: fetchError }) => {

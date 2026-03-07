@@ -9,11 +9,15 @@ const TABS = ['pending', 'accepted', 'declined', 'cancelled'];
 
 export default function Invitations() {
   const { user } = useAuth();
-  const { invitations, loading, updateStatus } = useInvitations(user?.id);
+  const { invitations, loading, updateStatus, sharePhone } = useInvitations(user?.id);
   const [activeTab, setActiveTab] = useState('pending');
 
   const handleStatus = async (id, status) => {
     try { await updateStatus(id, status); } catch (e) { console.error(e); }
+  };
+
+  const handleSharePhone = async (id, role) => {
+    try { await sharePhone(id, role); } catch (e) { console.error(e); }
   };
 
   const filtered = invitations.filter((inv) => inv.status === activeTab);
@@ -97,6 +101,52 @@ export default function Invitations() {
                     </button>
                   )}
                 </div>
+
+                {invite.status === 'accepted' && (
+                  <div className="rounded-2xl border border-amber-100 bg-amber-50/40 p-4 space-y-3">
+                    <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Contact sharing</p>
+                    {isHost && (
+                      <div className="space-y-2">
+                        {invite.host_shared_phone ? (
+                          <p className="text-slate-500">You shared your number with {invite.guest?.name}.</p>
+                        ) : (
+                          <button
+                            onClick={() => handleSharePhone(invite.id, 'host')}
+                            className="min-h-[44px] rounded-2xl border-2 border-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-amber-700 hover:bg-amber-100 transition-all duration-200 cursor-pointer"
+                          >
+                            Share my number with {invite.guest?.name}
+                          </button>
+                        )}
+                        {invite.guest_shared_phone && invite.guest?.phone && (
+                          <p className="font-semibold text-slate-700">{invite.guest?.name}: <a href={`tel:${invite.guest.phone}`} className="text-amber-600 underline">{invite.guest.phone}</a></p>
+                        )}
+                        {invite.guest_shared_phone && !invite.guest?.phone && (
+                          <p className="text-slate-400">{invite.guest?.name} shared their number but hasn't added one to their profile yet.</p>
+                        )}
+                      </div>
+                    )}
+                    {isGuest && (
+                      <div className="space-y-2">
+                        {invite.guest_shared_phone ? (
+                          <p className="text-slate-500">You shared your number with {invite.host?.name}.</p>
+                        ) : (
+                          <button
+                            onClick={() => handleSharePhone(invite.id, 'guest')}
+                            className="min-h-[44px] rounded-2xl border-2 border-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-amber-700 hover:bg-amber-100 transition-all duration-200 cursor-pointer"
+                          >
+                            Share my number with {invite.host?.name}
+                          </button>
+                        )}
+                        {invite.host_shared_phone && invite.host?.phone && (
+                          <p className="font-semibold text-slate-700">{invite.host?.name}: <a href={`tel:${invite.host.phone}`} className="text-amber-600 underline">{invite.host.phone}</a></p>
+                        )}
+                        {invite.host_shared_phone && !invite.host?.phone && (
+                          <p className="text-slate-400">{invite.host?.name} shared their number but hasn't added one to their profile yet.</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}

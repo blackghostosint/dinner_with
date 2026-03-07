@@ -17,7 +17,7 @@ export function useInvitations(userId) {
     const fetchAll = async () => {
       const { data: invData, error: invError } = await supabase
         .from('invitations')
-        .select('*, restaurant:restaurants(name, address)')
+        .select('*, restaurant:restaurants(name, address), host_shared_phone, guest_shared_phone')
         .or(`host_user_id.eq.${userId},guest_user_id.eq.${userId}`);
 
       if (invError) { setError(invError); setInvitations([]); setLoading(false); return; }
@@ -28,7 +28,7 @@ export function useInvitations(userId) {
 
       const { data: profileData } = await supabase
         .from('profiles')
-        .select('id, name, city, state')
+        .select('id, name, city, state, phone')
         .in('id', userIds);
 
       const profileMap = Object.fromEntries((profileData ?? []).map((p) => [p.id, p]));
@@ -48,6 +48,19 @@ export function useInvitations(userId) {
     fetchAll();
   }, [userId]);
 
+  const sharePhone = async (invitationId, role) => {
+    if (!supabase) throw new Error('Supabase client not configured');
+    const field = role === 'host' ? 'host_shared_phone' : 'guest_shared_phone';
+    const { error } = await supabase
+      .from('invitations')
+      .update({ [field]: true })
+      .eq('id', invitationId);
+    if (error) throw error;
+    setInvitations((prev) =>
+      prev.map((inv) => (inv.id === invitationId ? { ...inv, [field]: true } : inv)),
+    );
+  };
+
   const updateStatus = async (invitationId, status) => {
     if (!supabase) {
       throw new Error('Supabase client not configured');
@@ -65,5 +78,5 @@ export function useInvitations(userId) {
     return status;
   };
 
-  return { invitations, loading, error, updateStatus };
+  return { invitations, loading, error, updateStatus, sharePhone };
 }
