@@ -84,6 +84,7 @@ Create a `.env` file:
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-public-anon-key
 ```
+The hook now also reads `VITE_FSQ_API_KEY` to pull live restaurant data from [Foursquare Places Search](https://docs.foursquare.com/developer/reference/place-search). Set that key to a v3 token so `useRestaurants` can request nearby sit-down places with the `Authorization: Bearer <token>` header and merge the results with the seeded Supabase table.
 
 ```bash
 npm run dev
