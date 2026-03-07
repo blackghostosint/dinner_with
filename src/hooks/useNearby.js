@@ -31,17 +31,15 @@ export function useNearby({ role, homeLocation, currentUserId }) {
         } else {
           const withDistance = (data ?? [])
             .map((profile) => {
-              if (
-                typeof profile.lat !== 'number' ||
-                typeof profile.lng !== 'number'
-              ) {
-                return null;
-              }
+              const lat = parseFloat(profile.lat);
+              const lng = parseFloat(profile.lng);
+              if (isNaN(lat) || isNaN(lng)) return null;
+              profile = { ...profile, lat, lng };
               const miles = haversineDistance(
                 homeLocation.lat,
                 homeLocation.lng,
-                profile.lat,
-                profile.lng,
+                lat,
+                lng,
               );
               return { ...profile, distance: miles };
             })

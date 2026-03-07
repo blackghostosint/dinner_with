@@ -7,16 +7,18 @@ import BottomNav from '../components/BottomNav.jsx';
 import { useAuth } from '../hooks/useAuth.js';
 import { useNearby } from '../hooks/useNearby.js';
 import { useProfile } from '../hooks/useProfile.js';
+import { useRestaurants } from '../hooks/useRestaurants.js';
 
 export default function Nearby() {
   const { user, loading: authLoading } = useAuth();
   const { profile, loading: profileLoading } = useProfile(user?.id);
   const homeLocation = useMemo(() => {
-    if (typeof profile?.lat === 'number' && typeof profile?.lng === 'number') {
-      return { lat: profile.lat, lng: profile.lng };
-    }
+    const lat = parseFloat(profile?.lat);
+    const lng = parseFloat(profile?.lng);
+    if (!isNaN(lat) && !isNaN(lng)) return { lat, lng };
     return null;
   }, [profile?.lat, profile?.lng]);
+  const { restaurants } = useRestaurants({ homeLocation });
   const { nearby, loading: nearbyLoading } = useNearby({
     role: profile?.role,
     homeLocation,
@@ -74,7 +76,14 @@ export default function Nearby() {
           </div>
         )}
         {viewMode === 'map' && (
-          <MapView center={mapCenter} markers={nearby} />
+          <MapView
+            center={mapCenter}
+            markers={[
+              ...nearby.map((p) => ({ ...p, type: 'person' })),
+              ...restaurants.map((r) => ({ ...r, type: 'place' })),
+            ]}
+            selfMarker={homeLocation}
+          />
         )}
         {viewMode === 'list' && (
           <div className="space-y-4">
