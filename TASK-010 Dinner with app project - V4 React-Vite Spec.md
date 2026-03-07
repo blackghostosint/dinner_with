@@ -488,3 +488,10 @@ Create seed data and demo prep:
 - [[TASK-010 Dinner with app project - V3 Vibe-Code Spec]]
 - [[TASK-004 Hackathon competition March 2026]]
 - [[TASK-008 Hackathon submission deadline + 2-minute demo]]
+
+---
+
+## Current blockers & next steps
+
+- **Supabase schema + demo data**: Schema/policy/seed SQL is ready in `scripts/apply_supabase_schema.py`, but the published database (`db.qnnrpneuireiyefuzbcu.supabase.co`) currently resolves only to an IPv6 address that this environment cannot reach (`psycopg.OperationalError: failed to resolve host … getaddrinfo failed`). Run the script from a network with IPv6 connectivity or execute the SQL via the Supabase dashboard so the tables, policies, seeded restaurants, demo hosts/guests, invitations, and safety report exist before running the app.
+- **Next steps**: Confirm `.env` points to the Supabase project once seeded, restart `npm run dev`, and exercise the Nearby + invitations flows with the seeded demo accounts (`demo-host@example.com`/`demo-guest@example.com`). If issues persist, capture the errors/screenshots and report them so fixes can be prioritized quickly.

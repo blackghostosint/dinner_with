@@ -5,22 +5,28 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Welcome() {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleMagicLink = async (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
     if (!supabase) {
       setFeedback('Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    setLoading(false);
-    setFeedback(
-      error ? error.message : 'Magic link queued. Check your inbox (and spam).',
-    );
+    if (password) {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      setLoading(false);
+      if (error) { setFeedback(error.message); return; }
+      navigate('/nearby');
+    } else {
+      const { error } = await supabase.auth.signInWithOtp({ email });
+      setLoading(false);
+      setFeedback(error ? error.message : 'Magic link queued. Check your inbox (and spam).');
+    }
   };
 
   return (
@@ -49,23 +55,30 @@ export default function Welcome() {
             Scroll for details
           </button>
         </div>
-        <form onSubmit={handleMagicLink} className="space-y-3">
-          <label className="text-xs uppercase tracking-[0.4em] text-slate-500">Email for login</label>
+        <form onSubmit={handleSignIn} className="space-y-3">
+          <label className="text-xs uppercase tracking-[0.4em] text-slate-500">Sign in</label>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+            placeholder="you@dinnerwith.com"
+          />
           <div className="flex flex-wrap gap-2">
             <input
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
               className="flex-1 rounded-2xl border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
-              placeholder="you@dinnerwith.com"
+              placeholder="Password (or leave blank for magic link)"
             />
             <button
               type="submit"
               disabled={!email || loading}
               className="rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white disabled:opacity-50"
             >
-              {loading ? 'Sending...' : 'Send magic link'}
+              {loading ? 'Signing in...' : password ? 'Sign in' : 'Send magic link'}
             </button>
           </div>
           {feedback && <p className="text-xs text-slate-500">{feedback}</p>}
