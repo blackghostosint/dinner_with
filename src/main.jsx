@@ -25,7 +25,7 @@ if (typeof window !== 'undefined') {
   }
 
   window.addEventListener('beforeinstallprompt', (event) => {
-    event.preventDefault();
+    // Allow the native install prompt to show naturally
     window.deferredPrompt = event;
   });
 }
