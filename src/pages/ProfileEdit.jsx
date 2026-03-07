@@ -56,7 +56,7 @@ export default function ProfileEdit() {
       <div className="mx-auto max-w-3xl space-y-4">
         <header>
           <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Profile</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Edit your profile</h1>
+          <h1 className="text-slate-900">Edit your profile</h1>
         </header>
         <form className="space-y-4 rounded-3xl border border-amber-100 bg-white p-6 shadow-sm" onSubmit={handleSubmit}>
           {['name', 'phone', 'city', 'state'].map((field) => (

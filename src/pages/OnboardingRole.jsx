@@ -31,7 +31,7 @@ export default function OnboardingRole() {
       <div className="space-y-6">
         <div>
           <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Step 1 / 3</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Choose your role</h1>
+          <h1 className="text-slate-900">Choose your role</h1>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {roles.map((item) => (
@@ -43,13 +43,15 @@ export default function OnboardingRole() {
             />
           ))}
         </div>
-        <div className="rounded-2xl border border-amber-200 bg-white/80 p-4 text-sm text-slate-600 shadow-sm">
-          <p>
+        <div className="rounded-2xl border border-amber-100 bg-white p-5 shadow-sm">
+          <p className="text-slate-600 leading-relaxed">
             Hosts invite guests to a local restaurant and cover the meal. Guests are anyone who would enjoy company — seniors, newcomers, or simply someone who would rather not eat alone.
           </p>
-          <p className="mt-1 text-xs uppercase tracking-[0.4em] text-amber-500">
-            {current?.description}
-          </p>
+          {current?.description && (
+            <p className="mt-3 border-l-2 border-amber-300 pl-3 text-slate-500 italic leading-relaxed">
+              {current.description}
+            </p>
+          )}
         </div>
         <button
           onClick={handleContinue}

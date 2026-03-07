@@ -90,7 +90,7 @@ export default function OnboardingProfile() {
       <div className="mx-auto flex max-w-4xl flex-col gap-6">
         <div>
           <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Step 3 / 3</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Tell us about yourself</h1>
+          <h1 className="text-slate-900">Tell us about yourself</h1>
           <p className="text-sm text-slate-500">
             Role: <span className="font-semibold">{role}</span>
           </p>
