@@ -33,7 +33,7 @@ export default function OnboardingRole() {
           <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Step 1 / 3</p>
           <h1 className="text-slate-900">Choose your role</h1>
         </div>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div role="group" aria-label="Choose your role" className="grid gap-4 md:grid-cols-2">
           {roles.map((item) => (
             <RoleCard
               key={item.role}
@@ -55,6 +55,7 @@ export default function OnboardingRole() {
         </div>
         <button
           onClick={handleContinue}
+          aria-label={`Continue as ${selected}`}
           className="min-h-[44px] w-full rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 cursor-pointer"
         >
           Continue →

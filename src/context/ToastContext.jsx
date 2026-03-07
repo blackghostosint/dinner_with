@@ -22,7 +22,12 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={contextValue}>
       {children}
-      <div className="pointer-events-none fixed inset-x-0 bottom-32 flex justify-center gap-3 px-4">
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="pointer-events-none fixed inset-x-0 bottom-32 flex justify-center gap-3 px-4"
+      >
         {toasts.map((toast) => (
           <div
             key={toast.id}

@@ -12,19 +12,22 @@ export default function InviteCard({ invite, currentUserId }) {
   const restaurantAddress = invite.restaurant?.address ?? '';
 
   return (
-    <div className="rounded-2xl border border-amber-100 bg-white p-5 shadow-sm">
+    <article aria-label={`${invite.status} invitation at ${restaurantName}`} className="rounded-2xl border border-amber-100 bg-white p-5 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-lg font-semibold text-slate-900">{restaurantName}</p>
           {restaurantAddress && <p className="text-xs text-slate-400">{restaurantAddress}</p>}
         </div>
-        <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${statusStyles[invite.status] ?? 'bg-slate-100 text-slate-600'}`}>
+        <span
+          aria-label={`Status: ${invite.status}`}
+          className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${statusStyles[invite.status] ?? 'bg-slate-100 text-slate-600'}`}
+        >
           {invite.status}
         </span>
       </div>
       {otherPerson && (
         <div className="mt-3 flex items-center gap-2">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-xs font-bold text-amber-800">
+          <div aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-xs font-bold text-amber-800">
             {otherPerson.name?.split(' ').map((p) => p[0]).join('').slice(0, 2)}
           </div>
           <div>
@@ -40,6 +43,6 @@ export default function InviteCard({ invite, currentUserId }) {
       <p className="mt-3 text-xs uppercase tracking-[0.4em] text-amber-500">
         {invite.proposed_time ? new Date(invite.proposed_time).toLocaleString() : 'Time TBD'}
       </p>
-    </div>
+    </article>
   );
 }

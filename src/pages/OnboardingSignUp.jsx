@@ -77,7 +77,7 @@ export default function OnboardingSignUp() {
           </label>
 
           {feedback && (
-            <p className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-red-600">
+            <p role="alert" aria-live="assertive" className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-red-600">
               {feedback}
             </p>
           )}
@@ -85,6 +85,7 @@ export default function OnboardingSignUp() {
           <button
             type="submit"
             disabled={loading}
+            aria-busy={loading}
             className="min-h-[52px] w-full rounded-2xl bg-amber-500 px-6 py-3 font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 disabled:opacity-60 cursor-pointer"
           >
             {loading ? 'Creating account...' : 'Create account →'}

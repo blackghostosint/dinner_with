@@ -72,6 +72,7 @@ export default function UserProfile() {
       <div className="mx-auto max-w-3xl space-y-6">
         <button
           onClick={() => navigate(-1)}
+          aria-label="Go back to previous page"
           className="min-h-[44px] text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-amber-500 transition-colors duration-200 cursor-pointer"
         >
           ← Back
@@ -79,7 +80,7 @@ export default function UserProfile() {
 
         <div className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-200 to-amber-400 text-2xl font-bold text-amber-900">
+            <div aria-hidden="true" className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-200 to-amber-400 text-2xl font-bold text-amber-900">
               {initials}
             </div>
             <div className="flex-1">
@@ -122,7 +123,7 @@ export default function UserProfile() {
           >
             {reportSent ? 'Reported' : 'Report user'}
           </button>
-          {feedback && <p className="mt-2 text-xs text-slate-500">{feedback}</p>}
+          {feedback && <p role="status" aria-live="polite" className="mt-2 text-xs text-slate-500">{feedback}</p>}
         </div>
       </div>
     </Layout>

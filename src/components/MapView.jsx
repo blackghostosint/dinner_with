@@ -46,7 +46,11 @@ function iconForType(type) {
 
 export default function MapView({ center, markers = [], selfMarker = null }) {
   return (
-    <div className="h-[45vh] min-h-[280px] max-h-[500px] w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <div
+      role="region"
+      aria-label="Interactive map showing nearby people and restaurants. Switch to List view for a screen-reader-friendly alternative."
+      className="h-[45vh] min-h-[280px] max-h-[500px] w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+    >
       <MapContainer
         center={center ?? [37.7749, -122.4194]}
         zoom={13}

@@ -56,6 +56,7 @@ export default function CreateInvite() {
       <div className="space-y-6">
         <button
           onClick={() => navigate(-1)}
+          aria-label="Go back to previous page"
           className="min-h-[44px] text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-amber-500 transition-colors duration-200 cursor-pointer"
         >
           ← Back
@@ -102,7 +103,7 @@ export default function CreateInvite() {
           >
             Send invite
           </button>
-          {feedback && <p className="text-sm text-red-500">{feedback}</p>}
+          {feedback && <p role="alert" aria-live="assertive" className="text-sm text-red-500">{feedback}</p>}
         </form>
       </div>
     </Layout>

@@ -53,12 +53,15 @@ export default function Invitations() {
           <h1 className="text-3xl text-slate-900">Dinner plans</h1>
         </header>
 
-        <div className="flex flex-wrap gap-2">
+        <div role="tablist" aria-label="Invitation status" className="flex flex-wrap gap-2">
           {TABS.map((tab) => {
             const count = invitations.filter((inv) => inv.status === tab).length;
             return (
               <button
                 key={tab}
+                role="tab"
+                aria-selected={activeTab === tab}
+                aria-controls={`tabpanel-${tab}`}
                 onClick={() => setActiveTab(tab)}
                 className={`min-h-[44px] rounded-2xl px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] transition-all duration-200 cursor-pointer ${
                   activeTab === tab
@@ -72,7 +75,7 @@ export default function Invitations() {
           })}
         </div>
 
-        {loading && <p className="text-sm text-slate-500">Loading invites…</p>}
+        {loading && <p role="status" aria-live="polite" className="text-sm text-slate-500">Loading invites…</p>}
 
         {!loading && filtered.length === 0 && (
           <div className="rounded-2xl border-2 border-dashed border-amber-100 bg-white p-8 text-center">
@@ -83,7 +86,7 @@ export default function Invitations() {
           </div>
         )}
 
-        <div className="space-y-4">
+        <div id={`tabpanel-${activeTab}`} role="tabpanel" aria-label={`${activeTab} invitations`} className="space-y-4">
           {filtered.map((invite) => {
             const isHost = invite.host_user_id === user?.id;
             const isGuest = invite.guest_user_id === user?.id;

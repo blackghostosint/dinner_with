@@ -54,11 +54,13 @@ export default function Nearby() {
               : 'A host near you will cover the meal — just bring yourself.'}
           </p>
         </header>
-        <div className="flex gap-2">
+        <div role="group" aria-label="View mode" className="flex gap-2">
           {['map', 'list'].map((mode) => (
             <button
               key={mode}
               onClick={() => setViewMode(mode)}
+              aria-pressed={viewMode === mode}
+              aria-label={mode === 'map' ? 'Map view' : 'List view (recommended for screen readers)'}
               className={`min-h-[44px] rounded-2xl px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] transition-all duration-200 cursor-pointer ${
                 viewMode === mode
                   ? 'bg-slate-900 text-white'
@@ -69,7 +71,7 @@ export default function Nearby() {
             </button>
           ))}
         </div>
-        {nearbyLoading && <div className="text-sm text-slate-500">Scanning the radius...</div>}
+        {nearbyLoading && <div role="status" aria-live="polite" className="text-sm text-slate-500">Scanning the radius...</div>}
         {restaurantError && (
           <div className="rounded-2xl border border-red-100 bg-red-50 px-4 py-2 text-sm text-red-500">
             Restaurant data error: {restaurantError.message}

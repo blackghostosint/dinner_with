@@ -128,7 +128,7 @@ export default function OnboardingProfile() {
             >
               Allow location
             </button>
-            <p className="text-xs text-slate-500 uppercase tracking-[0.4em]">
+            <p aria-live="polite" aria-atomic="true" className="text-xs text-slate-500 uppercase tracking-[0.4em]">
               {locationStatus === 'pending' ? 'Detecting...' : locationStatus === 'granted' ? locationText : 'Or enter city/state below'}
             </p>
           </div>

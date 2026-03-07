@@ -39,6 +39,7 @@ export default function RestaurantPicker() {
       <div className="space-y-6">
         <button
           onClick={() => navigate(-1)}
+          aria-label="Go back to previous page"
           className="min-h-[44px] text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-amber-500 transition-colors duration-200 cursor-pointer"
         >
           ← Back
@@ -51,7 +52,7 @@ export default function RestaurantPicker() {
           <p className="text-sm text-slate-500">Sit-down restaurants sorted by distance</p>
         </header>
 
-        {loading && <p className="text-sm text-slate-500">Loading restaurants…</p>}
+        {loading && <p role="status" aria-live="polite" className="text-sm text-slate-500">Loading restaurants…</p>}
 
         <div className="space-y-4">
           {sorted.map((restaurant) => (
@@ -70,6 +71,7 @@ export default function RestaurantPicker() {
                     onClick={() =>
                       navigate(`/invitations/create?guestId=${guestId ?? ''}&restaurantId=${restaurant.id}`)
                     }
+                    aria-label={`Select ${restaurant.name}`}
                     className="min-h-[44px] rounded-2xl bg-amber-500 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-white hover:bg-amber-600 transition-all duration-200 cursor-pointer"
                   >
                     Select

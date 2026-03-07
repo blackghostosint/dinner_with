@@ -115,7 +115,7 @@ export default function ProfileEdit() {
               >
                 {locationStatus === 'pending' ? 'Detecting...' : 'Update location'}
               </button>
-              <p className="text-slate-500">
+              <p aria-live="polite" aria-atomic="true" className="text-slate-500">
                 {locationStatus === 'granted'
                   ? `Detected: ${formValues.city || 'City'}, ${formValues.state || 'State'}`
                   : locationStatus === 'denied'
@@ -143,7 +143,7 @@ export default function ProfileEdit() {
           >
             Save changes
           </button>
-          {feedback && <p className="text-xs text-slate-500">{feedback}</p>}
+          {feedback && <p role="status" aria-live="polite" className="text-xs text-slate-500">{feedback}</p>}
         </form>
       </div>
       <BottomNav />
