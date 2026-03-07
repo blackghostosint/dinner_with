@@ -1,92 +1,111 @@
-# Dinner with... 🍽️
+# Dinner with...
 
-**Share a meal. Make a connection.**
-
-Dinner with... is a community-first app built to connect hosts and guests for sit-down dinners at nearby restaurants. The goal is to lessen social isolation, especially for elders, by encouraging real-world meals—not dating.
-
-> [!IMPORTANT]
-> **Dinner with... is for social connection — NOT dating.** We prioritize consent, safety, and trust.
+**Because nobody should eat alone.**
 
 ---
 
-## 🚀 Hackathon MVP Status
-Built during the March 2026 Hackathon to prove the core flow.
+## The Story
 
-### Success Criteria
-- [ ] User sign up / login / role selection (host vs guest)
-- [ ] Profile creation with geolocation
-- [ ] Discovery of opposite-role folks within a 10-mile radius
-- [ ] Invitation creation from host → guest
-- [ ] RSVP flows (guest accept/decline, host cancel)
-- [ ] Safety reports + trust reminders across the app
+Every night, millions of people sit down to eat by themselves.
 
----
+Not by choice. The recently widowed. The elderly neighbor whose children live far away. The newcomer who moved to a city where they don't know a soul. The person who just went through something hard and has no one to call.
 
-## 🛠️ Tech Stack
-- **Frontend**: React 18 + Vite
-- **Styling**: Tailwind CSS (mobile-first)
-- **Backend/Auth**: Supabase (Postgres + managed auth)
-- **Maps**: Leaflet + OpenStreetMap
-- **Mobile**: Progressive Web App (service worker + install banner)
-- **Testing**: Vitest + React Testing Library
+We live in a time when it has never been easier to connect digitally — and never been harder to connect in person. We have thousands of followers and no one to share a meal with.
+
+**Dinner with...** started as a simple question: what if a neighbor could just invite someone to dinner?
+
+Not a date. Not charity. Not a program. Just a shared table at a local restaurant, covered by a host who wants to give back in the most human way possible — with their time, their presence, and a meal.
+
+Hosts are people in the community who want to do something meaningful. Guests are anyone who would benefit from company — seniors, newcomers, people who are isolated, people who are lonely. Within 10 miles of each other. At a real sit-down restaurant. One conversation at a time.
+
+This is community infrastructure. The kind that used to happen naturally — when neighbors knew each other, when church halls filled on Sundays, when someone always seemed to know you needed a meal. We are rebuilding that, quietly, one dinner at a time.
 
 ---
 
-## 📦 Getting Started
+## How It Works
 
-### Prerequisites
-- Node.js (v18+ recommended)
-- npm
+**Hosts** sign up, set their location, and browse guests within 10 miles. They pick a local sit-down restaurant, send an invitation, and cover the meal. The real gift is the conversation.
 
-### Installation
+**Guests** sign up and wait to be invited. No cost. No pressure. Just show up and enjoy the company of someone who chose to reach out.
+
+Both parties see each other's name, a short bio, and their distance. Nothing more until they agree to meet. Safety and trust are built into every step.
+
+---
+
+## What Was Built
+
+This is a hackathon MVP — designed and built in 3 days to prove the core experience works.
+
+- Choose your role — host or guest
+- Create a profile with your location
+- See people nearby on a live map within 10 miles
+- Hosts send dinner invitations to a specific guest at a specific restaurant
+- Guests accept or decline
+- Both parties get the details — where, when, who
+
+Everything is built around one principle: this is for connection, not dating. Trust banners, consent checkpoints, and safety reporting are woven through the entire app.
+
+---
+
+## Live App
+
+**[dinnerwith.netlify.app](https://dinnerwith.netlify.app)**
+
+Demo accounts for judges:
+- Host: `demohost@dinnerwith.app` / `demo123456`
+- Guest: `demoguest@dinnerwith.app` / `demo123456`
+
+---
+
+## Tech Stack
+
+| Layer | Choice |
+|---|---|
+| Frontend | React 18 + Vite |
+| Styling | Tailwind CSS v4 (mobile-first) |
+| Backend / Auth | Supabase (Postgres + managed auth) |
+| Maps | Leaflet + OpenStreetMap |
+| Location | HTML5 geolocation + IP fallback + Nominatim geocoding |
+| Mobile | Progressive Web App (installable) |
+| Hosting | Netlify |
+
+---
+
+## Run It Locally
+
 ```bash
-# Clone the repo
 git clone https://github.com/blackghostosint/dinner_with.git
 cd dinner_with
-
-# Install dependencies
 npm install
 ```
 
-### Development Workflow
-```bash
-# Run the dev server
-npm run dev
-
-# Run the test suite
-npm test
-```
-
----
-
-## 🛡️ Safety & Trust
-- Mandatory onboarding and consent before guests can browse nearby hosts.
-- Trust banners remind users that Dinner with... is platonic.
-- Safety reports feed into Supabase to flag concerning behavior.
-
----
-
-## ⚙️ Environment
-Copy `.env.example` (or create a `.env`) with:
+Create a `.env` file:
 ```
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-public-anon-key
 ```
-Without both values, auth, profile syncing, invitations, and reporting are disabled.
 
-## 🧾 Supabase schema
-The app relies on four tables: `profiles`, `restaurants`, `invitations`, and `safety_reports`. Each table enables row level security so users can only update their own rows while still reading public discovery data. The spec file (`TASK-010 Dinner with app project - V4 React-Vite Spec.md`) contains the SQL plus seeded data for the demo.
+```bash
+npm run dev
+```
 
-Run `scripts/apply_supabase_schema.py` (with `SUPABASE_DB_URL` or `--connection`/`--connection-file`) to apply the schema and optionally seed restaurants plus demo hosts/guests. Supply `--seed-restaurants` and `--seed-demo --host-ids <ids> --guest-ids <ids>` once you have real auth users in that project. This script keeps schema/seed SQL under version control without hard-coding credentials.
-
-## 📱 PWA & assets
-`public/manifest.json`, `public/sw.js`, and `public/icons/*` are preconfigured so the site can be installed as a PWA. `src/main.jsx` registers the service worker and stores the `beforeinstallprompt` event for a custom install experience.
+The app requires a Supabase project with the schema from `scripts/supabase_manual.sql` applied. See the spec file for full setup details.
 
 ---
 
-## 📄 License
-Private Repository - All Rights Reserved.
+## Safety & Trust
+
+Dinner with... is built on the premise that trust must be earned and protected.
+
+- Every user acknowledges the community purpose before sending or accepting an invite
+- Trust reminders appear throughout the app — this is not a dating platform
+- Any user can report another at any time; reports are stored and reviewable
+- Hosts and guests only see name, bio, and distance — no contact details until both agree to meet
 
 ---
 
-*Part of the TASK-010 Project Series.*
+## Built During
+
+March 2026 Hackathon — 3 days, one idea, one question:
+
+*What if a neighbor just invited someone to dinner?*
