@@ -40,9 +40,11 @@ export default function Welcome() {
   return (
     <Layout>
       <div className="mx-auto max-w-3xl space-y-8">
-<h1 className="text-4xl font-semibold text-slate-900 sm:text-5xl">
-          Dinner with... brings sit-down dinners to neighbors who crave company.
-        </h1>
+        <img
+          src="/dinner_with_logo.png"
+          alt="Dinner with..."
+          className="h-64 w-auto"
+        />
         <p className="text-lg text-slate-600">
           This community-first experience is for people who want to break bread and
           create connections. We connect nearby members for platonic dinner matches.
