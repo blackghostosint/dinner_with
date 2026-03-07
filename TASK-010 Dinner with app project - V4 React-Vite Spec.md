@@ -501,10 +501,26 @@ Create seed data and demo prep:
 - **Nearby map**: Custom Leaflet divIcons — blue person (you), amber person (nearby users), green fork (restaurants); fixed Supabase numeric-as-string lat/lng with `parseFloat`; map height 500px; self marker z-index on top
 - **UserProfile page**: Centered avatar, distance display, amber Invite to dinner button, back button, report button disables after submit
 - **Invitations page**: Status tabs (Pending/Accepted/Declined/Cancelled) with counts; role-aware actions (guests accept/decline, hosts cancel); cards show restaurant name, other person's name + location, message
+- **RestaurantPicker**: Fetches live from `public.restaurants` via `useRestaurants` hook; sorted by distance; shows guest name in header
+- **CreateInvite**: Fetches guest + restaurant names; consent checkbox; submits to `invitations` table; redirects to /invitations on success
+- **ProfileEdit**: BottomNav added; save button styled amber
+- **PWA icons**: Generated from logo — `public/icons/icon-192.png` + `icon-512.png`; `mobile-web-app-capable` meta added
+- **Mission copy**: All pages updated to reflect the Dinner with... story — community connection, not dating
+- **Sign-out**: BottomNav includes sign-out button wired to `supabase.auth.signOut()`
+
+### Design system applied (Mar 7 2026)
+- **Typography**: Playfair Display SC (headings) + Karla (body) via Google Fonts; applied globally in `index.css`
+- **Accessibility font sizes**: `html { font-size: 18px }` base; `text-xs`/`text-sm` floored at 18px via `@theme` overrides; h3 ≥ 30px, h2 ≥ 33px, h1 = 40px
+- **Color system**: Warm cream background (`#fdf8f0`); amber-500 primary accent; amber border treatments throughout
+- **Touch targets**: `min-h-[44px]` on all interactive elements across all pages
+- **Interactions**: `cursor-pointer` + `transition-all duration-200` on all buttons and cards
+- **Sign-in card**: Highlighted with `border-2 border-amber-300 bg-amber-50 shadow-lg` — centered heading, amber CTA button
 
 ## Current blockers & next steps
 
-- **Restaurant picker**: Still uses 3 hardcoded restaurants — needs to fetch from `public.restaurants` in Supabase
-- **CreateInvite page**: Not yet tested end-to-end from host flow
-- **PWA icons**: `public/icons/icon-192.png` and `icon-512.png` missing — generates console warning; use realfavicongenerator.net to create them
-- **`apple-mobile-web-app-capable` deprecation**: Minor warning in `index.html` — replace with `mobile-web-app-capable`
+- **New user sign-up**: "Get started" leads to onboarding but no account creation path exists — new users cannot authenticate. Need email+password sign-up wired into the onboarding flow or Welcome page.
+- **Vercel deploy**: App not yet deployed — required for demo day submission link
+- **End-to-end test**: Full host flow untested: sign up → onboarding → nearby → view profile → pick restaurant → create invite → invitations tab
+- **Reset demo data**: Clear test invitations before recording demo video
+- **Demo video**: 2-minute walkthrough required for submission (Day 3)
+- **Submission post**: Written post required for hackathon entry (Day 3)
