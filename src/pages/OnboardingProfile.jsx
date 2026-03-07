@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '../components/Layout.jsx';
 import { useAuth } from '../hooks/useAuth.js';
 import { upsertProfile } from '../hooks/useProfile.js';
-import { detectLocation } from '../lib/utils.js';
+import { detectLocation, normalizePhone } from '../lib/utils.js';
 
 export default function OnboardingProfile() {
   const [searchParams] = useSearchParams();
@@ -104,7 +104,7 @@ export default function OnboardingProfile() {
               Phone (optional)
               <input
                 value={formValues.phone}
-                onChange={(event) => setFormValues((prev) => ({ ...prev, phone: event.target.value }))}
+                onChange={(event) => setFormValues((prev) => ({ ...prev, phone: normalizePhone(event.target.value) }))}
                 className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               />
             </label>

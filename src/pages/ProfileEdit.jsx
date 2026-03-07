@@ -3,7 +3,7 @@ import Layout from '../components/Layout.jsx';
 import BottomNav from '../components/BottomNav.jsx';
 import { useAuth } from '../hooks/useAuth.js';
 import { useProfile, upsertProfile } from '../hooks/useProfile.js';
-import { detectLocation } from '../lib/utils.js';
+import { detectLocation, normalizePhone } from '../lib/utils.js';
 
 export default function ProfileEdit() {
   const { user } = useAuth();
@@ -95,7 +95,12 @@ export default function ProfileEdit() {
               {field.charAt(0).toUpperCase() + field.slice(1)}
               <input
                 value={formValues[field]}
-                onChange={(event) => setFormValues((prev) => ({ ...prev, [field]: event.target.value }))}
+                onChange={(event) =>
+                  setFormValues((prev) => ({
+                    ...prev,
+                    [field]: field === 'phone' ? normalizePhone(event.target.value) : event.target.value,
+                  }))
+                }
                 className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               />
             </label>

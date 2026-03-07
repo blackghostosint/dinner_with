@@ -26,7 +26,10 @@ export function useProfile(userId) {
       });
   }, [userId]);
 
-  const hasCompletedProfile = useMemo(() => Boolean(profile?.profile_completed_at), [profile]);
+  const hasCompletedProfile = useMemo(
+    () => Boolean(profile?.profile_completed_at) || Boolean(profile?.name && profile?.role),
+    [profile],
+  );
 
   return { profile, loading, error, hasCompletedProfile };
 }

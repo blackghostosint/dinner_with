@@ -123,7 +123,7 @@ export function useRestaurants({ homeLocation } = {}) {
           setError(supRes.reason);
         }
         if (fsqRes.status === 'rejected') {
-          setError(fsqRes.reason);
+          console.warn('Foursquare unavailable, using seeded data:', fsqRes.reason?.message);
         }
         const seeded = supRes.status === 'fulfilled' ? supRes.value : [];
         const live = fsqRes.status === 'fulfilled' ? fsqRes.value : [];
