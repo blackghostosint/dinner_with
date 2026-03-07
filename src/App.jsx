@@ -5,6 +5,7 @@ import Invitations from './pages/Invitations.jsx';
 import Nearby from './pages/Nearby.jsx';
 import OnboardingProfile from './pages/OnboardingProfile.jsx';
 import OnboardingRole from './pages/OnboardingRole.jsx';
+import OnboardingSignUp from './pages/OnboardingSignUp.jsx';
 import ProfileEdit from './pages/ProfileEdit.jsx';
 import RestaurantPicker from './pages/RestaurantPicker.jsx';
 import UserProfile from './pages/UserProfile.jsx';
@@ -26,6 +27,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Welcome />} />
       <Route path="/onboarding/role" element={<OnboardingRole />} />
+      <Route path="/onboarding/signup" element={<OnboardingSignUp />} />
       <Route
         path="/onboarding/profile"
         element={

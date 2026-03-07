@@ -23,7 +23,7 @@ export default function OnboardingRole() {
   const current = useMemo(() => roles.find((entry) => entry.role === selected), [selected]);
 
   const handleContinue = () => {
-    navigate(`/onboarding/profile?role=${selected}`);
+    navigate(`/onboarding/signup?role=${selected}`);
   };
 
   return (
