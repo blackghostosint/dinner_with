@@ -46,7 +46,7 @@ function iconForType(type) {
 
 export default function MapView({ center, markers = [], selfMarker = null }) {
   return (
-    <div className="h-[500px] w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <div className="h-[45vh] min-h-[280px] max-h-[500px] w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
       <MapContainer
         center={center ?? [37.7749, -122.4194]}
         zoom={13}
