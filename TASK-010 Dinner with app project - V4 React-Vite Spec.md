@@ -516,11 +516,39 @@ Create seed data and demo prep:
 - **Interactions**: `cursor-pointer` + `transition-all duration-200` on all buttons and cards
 - **Sign-in card**: Highlighted with `border-2 border-amber-300 bg-amber-50 shadow-lg` — centered heading, amber CTA button
 
+### Sign-up + onboarding complete (Mar 7 2026)
+- **OnboardingSignUp page** (Step 2/3): email + password account creation via `supabase.auth.signUp()`; skips to profile if already authenticated
+- **Three-step flow**: Role → Sign Up → Profile → `/nearby`
+- **Auto-geocoding**: On profile save, if lat/lng missing but city/state present, Nominatim forward geocodes the address to coordinates
+- **IP geolocation fallback**: `detectLocation()` in `utils.js` tries GPS first, falls back to `ipapi.co` if OS-level location is blocked
+- **ProfileEdit location**: Added "Update location" button with same GPS + IP fallback; saves lat/lng on profile save
+
+### Deployment (Mar 7 2026)
+- **Live at**: `https://dinnerwith.netlify.app`
+- **Platform**: Netlify (not Vercel) — `public/_redirects` added for SPA routing
+- **Env vars**: `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY` set in Netlify dashboard
+- **Supabase auth**: Site URL + redirect URLs configured for Netlify domain
+- **GitHub**: Repository made public for hackathon judges
+
+### Security + privacy (Mar 7 2026)
+- **Phone number privacy**: Removed phone from `useNearby` select — never exposed during discovery
+- **Consent-based sharing**: `host_shared_phone` + `guest_shared_phone` boolean columns added to `invitations` table
+- **Phone sharing UI**: Accepted invitations show "Share my number with [Name]" button — scoped per invitation, persists in database
+- **Phone revealed**: Only shown to the other party after explicit consent; tappable `tel:` link on mobile
+
+### Mobile + PWA fixes (Mar 7 2026)
+- **Map overlapping nav**: Layout `pb-10` → `pb-28`; map height changed to `45vh` (min 280px, max 500px)
+- **Service worker**: Bumped to v3; network-first for HTML navigation; cache-first for static assets; `skipWaiting` + `clients.claim()` for immediate activation on update
+- **PWA install prompt**: Removed `event.preventDefault()` that was suppressing native Android install banner; manifest icons updated with `purpose: any`; background color updated to cream
+
+### README rewritten (Mar 7 2026)
+- Leads with mission story — why it was built, who it's for
+- Includes live app URL, demo credentials, thank you to Marcin Teodoru + Sabrina Ramonov
+- Tech stack and setup instructions retained but secondary to the story
+
 ## Current blockers & next steps
 
-- **New user sign-up**: "Get started" leads to onboarding but no account creation path exists — new users cannot authenticate. Need email+password sign-up wired into the onboarding flow or Welcome page.
-- **Vercel deploy**: App not yet deployed — required for demo day submission link
-- **End-to-end test**: Full host flow untested: sign up → onboarding → nearby → view profile → pick restaurant → create invite → invitations tab
+- **End-to-end test**: Full flow on live site — sign up → onboarding → nearby → invite → accept → phone share
 - **Reset demo data**: Clear test invitations before recording demo video
 - **Demo video**: 2-minute walkthrough required for submission (Day 3)
 - **Submission post**: Written post required for hackathon entry (Day 3)
