@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
 import { useAuth } from '../hooks/useAuth.js';
 import { useProfile } from '../hooks/useProfile.js';
+import { haversineDistance, formatDistance } from '../lib/utils.js';
 
 export default function UserProfile() {
   const { id } = useParams();
@@ -13,6 +14,16 @@ export default function UserProfile() {
   const [person, setPerson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState('');
+  const [reportSent, setReportSent] = useState(false);
+
+  const distance = useMemo(() => {
+    const myLat = parseFloat(currentProfile?.lat);
+    const myLng = parseFloat(currentProfile?.lng);
+    const theirLat = parseFloat(person?.lat);
+    const theirLng = parseFloat(person?.lng);
+    if ([myLat, myLng, theirLat, theirLng].some(isNaN)) return null;
+    return haversineDistance(myLat, myLng, theirLat, theirLng);
+  }, [currentProfile, person]);
 
   useEffect(() => {
     if (!id) return;
@@ -33,16 +44,17 @@ export default function UserProfile() {
   };
 
   const handleReport = async () => {
-    if (!user) {
-      setFeedback('Log in to report.');
-      return;
-    }
-    await supabase.from('safety_reports').insert({
+    if (!user) { setFeedback('Log in to report.'); return; }
+    if (reportSent) return;
+    const { error } = await supabase.from('safety_reports').insert({
       reporter_user_id: user.id,
       reported_user_id: person?.id,
       reason: 'Community guidelines violation',
     });
-    setFeedback('Report submitted. Thank you for keeping the space safe.');
+    if (!error) {
+      setReportSent(true);
+      setFeedback('Report submitted. Thank you for keeping the space safe.');
+    }
   };
 
   if (loading) {
@@ -53,44 +65,62 @@ export default function UserProfile() {
     );
   }
 
+  const initials = person?.name?.split(' ').map((p) => p[0]).join('').slice(0, 2) ?? '??';
+
   return (
     <Layout showTrust>
       <div className="mx-auto max-w-3xl space-y-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-slate-600"
+        >
+          ← Back
+        </button>
+
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="flex items-start gap-4">
-            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-amber-200 to-amber-400 p-3 text-3xl font-semibold text-amber-900">
-              {person?.name?.split(' ').map((part) => part[0]).join('').slice(0, 2) ?? '??'}
+          <div className="flex items-center gap-4">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-200 to-amber-400 text-2xl font-bold text-amber-900">
+              {initials}
             </div>
-            <div>
+            <div className="flex-1">
               <p className="text-2xl font-semibold text-slate-900">{person?.name ?? 'Unnamed'}</p>
               <p className="text-sm uppercase tracking-[0.4em] text-slate-500">{person?.role}</p>
               <p className="text-xs text-slate-400">{person?.city}, {person?.state}</p>
             </div>
+            {distance !== null && (
+              <div className="text-right">
+                <p className="text-lg font-semibold text-amber-500">{formatDistance(distance)}</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-400">away</p>
+              </div>
+            )}
           </div>
-          <p className="mt-4 text-sm text-slate-600">{person?.bio ?? 'No bio yet.'}</p>
+          <p className="mt-4 text-sm leading-relaxed text-slate-600">{person?.bio ?? 'No bio yet.'}</p>
         </div>
-        <div className="space-y-3 rounded-3xl border border-amber-100 bg-amber-50/60 p-6 text-sm text-slate-600">
-          <p className="font-semibold text-amber-700">Invite context</p>
-          <p>
+
+        {currentProfile?.role === 'host' && (
+          <button
+            onClick={handleInvite}
+            className="w-full rounded-2xl bg-amber-500 py-4 text-sm font-semibold uppercase tracking-[0.4em] text-white shadow-lg shadow-amber-200 hover:bg-amber-600"
+          >
+            Invite to dinner
+          </button>
+        )}
+
+        <div className="rounded-3xl border border-slate-100 bg-slate-50 p-6">
+          <p className="text-xs text-slate-400">
             {currentProfile?.role === 'host'
-              ? 'Select a restaurant to invite this guest to dinner.'
-              : 'Ask a host to invite you to a sit-down meal.'}
+              ? "You'll choose a restaurant on the next step."
+              : 'Hosts can invite you to a sit-down meal at a nearby restaurant.'}
           </p>
-          {currentProfile?.role === 'host' && (
-            <button
-              onClick={handleInvite}
-              className="rounded-2xl bg-slate-900 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-white"
-            >
-              Invite to dinner
-            </button>
-          )}
         </div>
+
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <button
             onClick={handleReport}
-            className="rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold uppercase tracking-[0.4em] text-red-600"
+            disabled={reportSent}
+            className="rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold uppercase tracking-[0.4em] text-red-500 disabled:opacity-50"
           >
-            Report user
+            {reportSent ? 'Reported' : 'Report user'}
           </button>
           {feedback && <p className="mt-2 text-xs text-slate-500">{feedback}</p>}
         </div>
