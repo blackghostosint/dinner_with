@@ -6,6 +6,7 @@ const FSQ_URL = 'https://api.foursquare.com/v3/places/search';
 const FSQ_RADIUS_METERS = 16093; // ~10 miles
 const FSQ_CATEGORY = '13065'; // Restaurants
 const FSQ_FIELDS = 'fsq_id,name,geocodes,location,categories,distance';
+const MAX_DISTANCE_MILES = 15;
 
 function normalizeSupabase(restaurants = [], homeLocation) {
   return restaurants
@@ -126,7 +127,11 @@ export function useRestaurants({ homeLocation } = {}) {
         }
         const seeded = supRes.status === 'fulfilled' ? supRes.value : [];
         const live = fsqRes.status === 'fulfilled' ? fsqRes.value : [];
-        setRestaurants(mergeLists(live, seeded));
+        const merged = mergeLists(live, seeded);
+        const filtered = homeLocation
+          ? merged.filter((r) => r.distance == null || r.distance <= MAX_DISTANCE_MILES)
+          : merged;
+        setRestaurants(filtered);
       })
       .catch((err) => {
         if (canceled) return;
