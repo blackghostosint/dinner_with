@@ -53,9 +53,9 @@ export default function OnboardingRole() {
         </div>
         <button
           onClick={handleContinue}
-          className="rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200"
+          className="min-h-[44px] w-full rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 cursor-pointer"
         >
-          Continue
+          Continue →
         </button>
       </div>
     </Layout>

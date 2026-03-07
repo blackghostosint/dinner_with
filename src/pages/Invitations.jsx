@@ -22,8 +22,8 @@ export default function Invitations() {
     <Layout showTrust>
       <div className="space-y-4">
         <header>
-          <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Invitations</p>
-          <h1 className="text-3xl font-semibold text-slate-900">Dinner plans</h1>
+          <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Your table</p>
+          <h1 className="text-3xl text-slate-900">Dinner plans</h1>
         </header>
 
         <div className="flex flex-wrap gap-2">
@@ -33,10 +33,10 @@ export default function Invitations() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`rounded-2xl px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] ${
+                className={`min-h-[44px] rounded-2xl px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] transition-all duration-200 cursor-pointer ${
                   activeTab === tab
                     ? 'bg-slate-900 text-white'
-                    : 'border border-slate-200 text-slate-500'
+                    : 'border-2 border-amber-100 text-slate-500 hover:border-amber-300'
                 }`}
               >
                 {tab} {count > 0 && `(${count})`}
@@ -48,8 +48,11 @@ export default function Invitations() {
         {loading && <p className="text-sm text-slate-500">Loading invites…</p>}
 
         {!loading && filtered.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-slate-200 bg-white/80 p-6 text-center text-sm text-slate-500">
-            No {activeTab} invitations.
+          <div className="rounded-2xl border-2 border-dashed border-amber-100 bg-white p-8 text-center">
+            <p className="text-base font-semibold text-slate-700">No {activeTab} invitations</p>
+            <p className="mt-1 text-sm text-slate-400">
+              {activeTab === 'pending' ? 'Invitations you send or receive will appear here.' : 'Nothing here yet.'}
+            </p>
           </div>
         )}
 

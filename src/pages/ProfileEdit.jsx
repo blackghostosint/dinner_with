@@ -58,14 +58,14 @@ export default function ProfileEdit() {
           <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Profile</p>
           <h1 className="text-3xl font-semibold text-slate-900">Edit your profile</h1>
         </header>
-        <form className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" onSubmit={handleSubmit}>
+        <form className="space-y-4 rounded-3xl border border-amber-100 bg-white p-6 shadow-sm" onSubmit={handleSubmit}>
           {['name', 'phone', 'city', 'state'].map((field) => (
             <label key={field} className="text-sm text-slate-500">
               {field.charAt(0).toUpperCase() + field.slice(1)}
               <input
                 value={formValues[field]}
                 onChange={(event) => setFormValues((prev) => ({ ...prev, [field]: event.target.value }))}
-                className="mt-2 w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+                className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               />
             </label>
           ))}
@@ -75,13 +75,13 @@ export default function ProfileEdit() {
               maxLength={200}
               value={formValues.bio}
               onChange={(event) => setFormValues((prev) => ({ ...prev, bio: event.target.value }))}
-              className="mt-2 w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               rows={3}
             />
           </label>
           <button
             type="submit"
-            className="w-full rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white hover:bg-amber-600"
+            className="min-h-[44px] w-full rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white hover:bg-amber-600 transition-all duration-200 cursor-pointer"
           >
             Save changes
           </button>

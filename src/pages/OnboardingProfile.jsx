@@ -95,7 +95,7 @@ export default function OnboardingProfile() {
             Role: <span className="font-semibold">{role}</span>
           </p>
         </div>
-        <form className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" onSubmit={handleSubmit}>
+        <form className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm" onSubmit={handleSubmit}>
           <div className="grid gap-4 md:grid-cols-2">
             <label className="text-sm text-slate-500">
               Name
@@ -103,7 +103,7 @@ export default function OnboardingProfile() {
                 required
                 value={formValues.name}
                 onChange={(event) => setFormValues((prev) => ({ ...prev, name: event.target.value }))}
-                className="mt-2 w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+                className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               />
             </label>
             <label className="text-sm text-slate-500">
@@ -111,7 +111,7 @@ export default function OnboardingProfile() {
               <input
                 value={formValues.phone}
                 onChange={(event) => setFormValues((prev) => ({ ...prev, phone: event.target.value }))}
-                className="mt-2 w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+                className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               />
             </label>
           </div>
@@ -122,7 +122,7 @@ export default function OnboardingProfile() {
               required
               value={formValues.bio}
               onChange={(event) => setFormValues((prev) => ({ ...prev, bio: event.target.value }))}
-              className="mt-2 w-full rounded-2xl border border-slate-200 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               rows={4}
             />
           </label>
@@ -130,7 +130,7 @@ export default function OnboardingProfile() {
             <button
               type="button"
               onClick={handleLoc}
-              className="rounded-2xl bg-amber-500 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white hover:bg-amber-600"
+              className="min-h-[44px] rounded-2xl bg-amber-500 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white hover:bg-amber-600 transition-all duration-200 cursor-pointer"
             >
               Allow location
             </button>
@@ -144,7 +144,7 @@ export default function OnboardingProfile() {
               <input
                 value={formValues.city}
                 onChange={(event) => setFormValues((prev) => ({ ...prev, city: event.target.value }))}
-                className="mt-2 w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+                className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               />
             </label>
             <label className="text-sm text-slate-500">
@@ -152,13 +152,13 @@ export default function OnboardingProfile() {
               <input
                 value={formValues.state}
                 onChange={(event) => setFormValues((prev) => ({ ...prev, state: event.target.value }))}
-                className="mt-2 w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+                className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               />
             </label>
           </div>
           <button
             type="submit"
-            className="mt-6 w-full rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200"
+            className="mt-6 min-h-[44px] w-full rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 cursor-pointer"
           >
             Save profile
           </button>

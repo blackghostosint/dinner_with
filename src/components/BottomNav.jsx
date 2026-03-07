@@ -18,7 +18,7 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="fixed bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center gap-3 rounded-3xl bg-white/90 px-5 py-3 shadow-lg backdrop-blur">
+    <nav className="fixed bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center gap-1 rounded-3xl border border-amber-100 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
       {navItems.map((item) => {
         const Icon = item.icon;
         const active = location.pathname === item.href;
@@ -26,7 +26,7 @@ export default function BottomNav() {
           <a
             key={item.label}
             href={item.href}
-            className={`flex flex-col items-center text-[11px] uppercase tracking-[0.3em] ${active ? 'text-amber-500' : 'text-slate-500'}`}
+            className={`flex min-h-[44px] min-w-[44px] flex-col items-center justify-center px-3 text-[10px] uppercase tracking-[0.3em] transition-colors duration-150 cursor-pointer ${active ? 'text-amber-500' : 'text-slate-400 hover:text-slate-600'}`}
           >
             <Icon className={`h-5 w-5 ${active ? 'text-amber-500' : 'text-slate-500'}`} />
             {item.label}
@@ -35,7 +35,7 @@ export default function BottomNav() {
       })}
       <button
         onClick={handleSignOut}
-        className="flex flex-col items-center text-[11px] uppercase tracking-[0.3em] text-slate-400 hover:text-red-400"
+        className="flex min-h-[44px] min-w-[44px] flex-col items-center justify-center px-3 text-[10px] uppercase tracking-[0.3em] text-slate-400 transition-colors duration-150 hover:text-red-400 cursor-pointer"
       >
         <LogOut className="h-5 w-5" />
         Sign out

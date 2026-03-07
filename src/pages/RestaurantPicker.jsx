@@ -39,7 +39,7 @@ export default function RestaurantPicker() {
       <div className="space-y-6">
         <button
           onClick={() => navigate(-1)}
-          className="text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-slate-600"
+          className="min-h-[44px] text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-amber-500 transition-colors duration-200 cursor-pointer"
         >
           ← Back
         </button>
@@ -55,7 +55,7 @@ export default function RestaurantPicker() {
 
         <div className="space-y-4">
           {sorted.map((restaurant) => (
-            <div key={restaurant.id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div key={restaurant.id} className="rounded-3xl border border-amber-100 bg-white p-5 shadow-sm transition-all duration-200 hover:border-amber-300 hover:shadow-md">
               <div className="flex items-center justify-between gap-4">
                 <div className="flex-1">
                   <p className="text-lg font-semibold text-slate-900">{restaurant.name}</p>
@@ -70,7 +70,7 @@ export default function RestaurantPicker() {
                     onClick={() =>
                       navigate(`/invitations/create?guestId=${guestId ?? ''}&restaurantId=${restaurant.id}`)
                     }
-                    className="rounded-2xl bg-amber-500 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-white hover:bg-amber-600"
+                    className="min-h-[44px] rounded-2xl bg-amber-500 px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-white hover:bg-amber-600 transition-all duration-200 cursor-pointer"
                   >
                     Select
                   </button>

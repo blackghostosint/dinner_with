@@ -79,34 +79,37 @@ export default function Welcome() {
 
         {/* Sign in */}
         <div className="py-12 border-b border-amber-100">
-          <p className="text-xs uppercase tracking-[0.4em] text-slate-400 mb-4">Sign in to your account</p>
-          <form onSubmit={handleSignIn} className="space-y-3 max-w-md">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-base focus:outline-none focus:border-amber-400 transition-colors duration-200"
-              placeholder="your@email.com"
-            />
-            <div className="flex flex-wrap gap-2">
+          <div className="rounded-3xl border-2 border-amber-300 bg-amber-50 p-8 shadow-lg shadow-amber-100 text-center">
+            <p className="text-xs uppercase tracking-[0.4em] text-amber-500 mb-2">Already a member?</p>
+            <h2 className="text-slate-900 mb-6">Sign in to your account</h2>
+            <form onSubmit={handleSignIn} className="space-y-3 text-left">
               <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className="flex-1 rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-base focus:outline-none focus:border-amber-400 transition-colors duration-200"
-                placeholder="Password (or leave blank for magic link)"
+                type="email"
+                required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="w-full rounded-2xl border-2 border-amber-200 bg-white px-4 py-3 text-base focus:outline-none focus:border-amber-400 transition-colors duration-200"
+                placeholder="your@email.com"
               />
-              <button
-                type="submit"
-                disabled={!email || loading}
-                className="min-h-[44px] rounded-2xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition-opacity duration-200 disabled:opacity-40 hover:bg-slate-700 cursor-pointer"
-              >
-                {loading ? 'Signing in...' : password ? 'Sign in' : 'Send link'}
-              </button>
-            </div>
-            {feedback && <p className="text-sm text-slate-500">{feedback}</p>}
-          </form>
+              <div className="flex flex-wrap gap-2">
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  className="flex-1 rounded-2xl border-2 border-amber-200 bg-white px-4 py-3 text-base focus:outline-none focus:border-amber-400 transition-colors duration-200"
+                  placeholder="Password (or leave blank for magic link)"
+                />
+                <button
+                  type="submit"
+                  disabled={!email || loading}
+                  className="min-h-[52px] rounded-2xl bg-amber-500 px-8 py-3 font-semibold text-white shadow-md shadow-amber-200 transition-all duration-200 disabled:opacity-40 hover:bg-amber-600 cursor-pointer"
+                >
+                  {loading ? 'Signing in...' : password ? 'Sign in' : 'Send link'}
+                </button>
+              </div>
+              {feedback && <p className="mt-1 text-slate-500">{feedback}</p>}
+            </form>
+          </div>
         </div>
 
         {/* How it works */}

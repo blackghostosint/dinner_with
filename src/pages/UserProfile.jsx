@@ -72,12 +72,12 @@ export default function UserProfile() {
       <div className="mx-auto max-w-3xl space-y-6">
         <button
           onClick={() => navigate(-1)}
-          className="text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-slate-600"
+          className="min-h-[44px] text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-amber-500 transition-colors duration-200 cursor-pointer"
         >
           ← Back
         </button>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm">
           <div className="flex items-center gap-4">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-200 to-amber-400 text-2xl font-bold text-amber-900">
               {initials}
@@ -100,13 +100,13 @@ export default function UserProfile() {
         {currentProfile?.role === 'host' && (
           <button
             onClick={handleInvite}
-            className="w-full rounded-2xl bg-amber-500 py-4 text-sm font-semibold uppercase tracking-[0.4em] text-white shadow-lg shadow-amber-200 hover:bg-amber-600"
+            className="min-h-[44px] w-full rounded-2xl bg-amber-500 py-4 text-sm font-semibold uppercase tracking-[0.4em] text-white shadow-lg shadow-amber-200 hover:bg-amber-600 transition-all duration-200 cursor-pointer"
           >
             Invite to dinner
           </button>
         )}
 
-        <div className="rounded-3xl border border-slate-100 bg-slate-50 p-6">
+        <div className="rounded-3xl border border-amber-100 bg-amber-50/40 p-6">
           <p className="text-xs text-slate-400">
             {currentProfile?.role === 'host'
               ? "You'll pick a local restaurant on the next step. You cover the meal — the real gift is the conversation."
@@ -114,11 +114,11 @@ export default function UserProfile() {
           </p>
         </div>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-3xl border border-amber-100 bg-white p-6 shadow-sm">
           <button
             onClick={handleReport}
             disabled={reportSent}
-            className="rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold uppercase tracking-[0.4em] text-red-500 disabled:opacity-50"
+            className="min-h-[44px] rounded-2xl border border-red-200 px-4 py-2 text-sm font-semibold uppercase tracking-[0.4em] text-red-400 transition-colors duration-200 hover:bg-red-50 disabled:opacity-50 cursor-pointer"
           >
             {reportSent ? 'Reported' : 'Report user'}
           </button>

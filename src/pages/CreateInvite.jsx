@@ -56,7 +56,7 @@ export default function CreateInvite() {
       <div className="space-y-6">
         <button
           onClick={() => navigate(-1)}
-          className="text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-slate-600"
+          className="min-h-[44px] text-xs uppercase tracking-[0.4em] text-slate-400 hover:text-amber-500 transition-colors duration-200 cursor-pointer"
         >
           ← Back
         </button>
@@ -69,13 +69,13 @@ export default function CreateInvite() {
             <p className="mt-1 text-sm text-slate-500">at <span className="font-medium text-slate-700">{restaurantName}</span></p>
           )}
         </header>
-        <form className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" onSubmit={handleSubmit}>
+        <form className="space-y-4 rounded-3xl border border-amber-100 bg-white p-6 shadow-sm" onSubmit={handleSubmit}>
           <label className="text-sm uppercase tracking-[0.4em] text-slate-500">
             Message (optional)
             <textarea
               value={message}
               onChange={(event) => setMessage(event.target.value)}
-              className="mt-2 w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
               rows={4}
             />
           </label>
@@ -85,7 +85,7 @@ export default function CreateInvite() {
               type="datetime-local"
               value={proposedTime}
               onChange={(event) => setProposedTime(event.target.value)}
-              className="mt-2 w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="mt-2 block w-full rounded-2xl border border-amber-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
             />
           </label>
           <label className="flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-slate-500">
@@ -98,7 +98,7 @@ export default function CreateInvite() {
           </label>
           <button
             type="submit"
-            className="w-full rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200"
+            className="min-h-[44px] w-full rounded-2xl bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 cursor-pointer"
           >
             Send invite
           </button>

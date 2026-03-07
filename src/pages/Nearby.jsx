@@ -46,23 +46,23 @@ export default function Nearby() {
     <Layout showTrust>
       <div className="space-y-6">
         <header>
-          <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Step 3 / 3</p>
-          <h1 className="text-3xl font-semibold text-slate-900">People nearby</h1>
-          <p className="text-sm text-slate-500">
+          <p className="text-xs uppercase tracking-[0.4em] text-amber-500">Discover</p>
+          <h1 className="text-3xl text-slate-900">People nearby</h1>
+          <p className="mt-1 text-sm leading-relaxed text-slate-500">
             {profile?.role === 'host'
               ? 'Choose someone from your community to invite to dinner.'
               : 'A host near you will cover the meal — just bring yourself.'}
           </p>
         </header>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-2">
           {['map', 'list'].map((mode) => (
             <button
               key={mode}
               onClick={() => setViewMode(mode)}
-              className={`rounded-2xl px-4 py-2 text-xs font-semibold uppercase tracking-[0.4em] ${
+              className={`min-h-[44px] rounded-2xl px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] transition-all duration-200 cursor-pointer ${
                 viewMode === mode
                   ? 'bg-slate-900 text-white'
-                  : 'border border-slate-200 text-slate-500'
+                  : 'border-2 border-amber-100 text-slate-500 hover:border-amber-300'
               }`}
             >
               {mode === 'map' ? 'Map' : 'List'}
@@ -71,8 +71,9 @@ export default function Nearby() {
         </div>
         {nearbyLoading && <div className="text-sm text-slate-500">Scanning the radius...</div>}
         {!nearbyLoading && nearby.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-slate-200 bg-white/70 p-6 text-center text-sm text-slate-500">
-            No one nearby yet — invite your friends to join the community.
+          <div className="rounded-2xl border-2 border-dashed border-amber-100 bg-white p-8 text-center">
+            <p className="text-base font-semibold text-slate-700">No one nearby yet</p>
+            <p className="mt-1 text-sm text-slate-400">Invite your friends to join the community.</p>
           </div>
         )}
         {viewMode === 'map' && (
