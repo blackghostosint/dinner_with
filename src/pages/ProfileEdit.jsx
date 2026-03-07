@@ -13,8 +13,40 @@ export default function ProfileEdit() {
     phone: '',
     city: '',
     state: '',
+    lat: null,
+    lng: null,
   });
   const [feedback, setFeedback] = useState('');
+  const [locationStatus, setLocationStatus] = useState('idle');
+
+  const handleLoc = () => {
+    if (!navigator.geolocation) { setLocationStatus('unsupported'); return; }
+    setLocationStatus('pending');
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+            { headers: { 'User-Agent': 'DinnerWithApp/1.0' } },
+          );
+          const data = await res.json();
+          setFormValues((prev) => ({
+            ...prev,
+            lat: latitude,
+            lng: longitude,
+            city: data.address?.city ?? data.address?.town ?? prev.city,
+            state: data.address?.state ?? prev.state,
+          }));
+          setLocationStatus('granted');
+        } catch {
+          setFormValues((prev) => ({ ...prev, lat: latitude, lng: longitude }));
+          setLocationStatus('granted');
+        }
+      },
+      () => setLocationStatus('denied'),
+    );
+  };
 
   useEffect(() => {
     if (profile) {
@@ -24,6 +56,8 @@ export default function ProfileEdit() {
         phone: profile.phone ?? '',
         city: profile.city ?? '',
         state: profile.state ?? '',
+        lat: profile.lat ?? null,
+        lng: profile.lng ?? null,
       });
     }
   }, [profile]);
@@ -37,7 +71,7 @@ export default function ProfileEdit() {
         email: user.email,
         ...formValues,
       });
-      setFeedback('Profile updated.');
+      setFeedback('Profile updated. Map will reflect your new location.');
     } catch (error) {
       setFeedback('Unable to update profile.');
     }
@@ -69,6 +103,28 @@ export default function ProfileEdit() {
               />
             </label>
           ))}
+          <div className="rounded-2xl border border-amber-100 bg-amber-50/40 p-4">
+            <p className="text-xs uppercase tracking-[0.4em] text-amber-500 mb-3">Location</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={handleLoc}
+                className="min-h-[44px] rounded-2xl bg-amber-500 px-4 py-2 text-slate-900 font-semibold uppercase tracking-[0.4em] text-white hover:bg-amber-600 transition-all duration-200 cursor-pointer"
+              >
+                {locationStatus === 'pending' ? 'Detecting...' : 'Update location'}
+              </button>
+              <p className="text-slate-500">
+                {locationStatus === 'granted'
+                  ? `Detected: ${formValues.city || 'City'}, ${formValues.state || 'State'}`
+                  : locationStatus === 'denied'
+                  ? 'Location denied — update city/state manually below.'
+                  : formValues.lat
+                  ? `Current: ${formValues.city}, ${formValues.state}`
+                  : 'No location set — tap to detect.'}
+              </p>
+            </div>
+          </div>
+
           <label className="text-sm text-slate-500">
             Bio
             <textarea
