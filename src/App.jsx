@@ -1,5 +1,6 @@
 import { AnimatePresence } from 'framer-motion';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.js';
 import { useProfile } from './hooks/useProfile.js';
 import CreateInvite from './pages/CreateInvite.jsx';
@@ -17,20 +18,21 @@ import PageTransition from './components/PageTransition.jsx';
 function ProtectedRoute({ children, skipProfileCheck = false }) {
   const { user, loading: authLoading } = useAuth();
   const { hasCompletedProfile, loading: profileLoading } = useProfile(user?.id);
+  const navigate = useNavigate();
 
-  if (authLoading || profileLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fdf8f0' }}>
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-amber-200 border-t-amber-500" aria-label="Loading" role="status" />
-      </div>
-    );
-  }
-  if (!user) {
-    return <Navigate to="/" replace />;
-  }
-  if (!skipProfileCheck && !hasCompletedProfile) {
-    return <Navigate to="/onboarding/profile" replace />;
-  }
+  useEffect(() => {
+    if (authLoading || profileLoading) return;
+    if (!user) {
+      navigate('/', { replace: true });
+    } else if (!skipProfileCheck && !hasCompletedProfile) {
+      navigate('/onboarding/profile', { replace: true });
+    }
+  }, [authLoading, profileLoading, user, skipProfileCheck, hasCompletedProfile, navigate]);
+
+  const blank = <div className="min-h-screen" style={{ backgroundColor: '#fdf8f0' }} />;
+
+  if (authLoading || profileLoading) return blank;
+  if (!user || (!skipProfileCheck && !hasCompletedProfile)) return blank;
   return children;
 }
 

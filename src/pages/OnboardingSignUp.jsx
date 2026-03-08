@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
@@ -9,19 +9,25 @@ export default function OnboardingSignUp() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const role = searchParams.get('role') ?? 'guest';
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
-  // Already logged in — skip account creation
-  if (user) {
-    navigate(`/onboarding/profile?role=${role}`, { replace: true });
-    return null;
-  }
-
-  useDocumentTitle('Create Account');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState('');
+
+  useDocumentTitle('Create Account');
+
+  // Already logged in — skip account creation
+  useEffect(() => {
+    if (user) {
+      navigate(`/onboarding/profile?role=${role}`, { replace: true });
+    }
+  }, [user, role, navigate]);
+
+  if (authLoading || user) {
+    return <div className="min-h-screen" style={{ backgroundColor: '#fdf8f0' }} />;
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
