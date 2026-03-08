@@ -3,6 +3,7 @@ import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
+import { useProfile } from '../hooks/useProfile.js';
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export default function Welcome() {
@@ -12,17 +13,21 @@ export default function Welcome() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
+  const { hasCompletedProfile, loading: profileLoading } = useProfile(user?.id);
   const howItWorksRef = useRef(null);
 
   useDocumentTitle('Welcome');
 
   useEffect(() => {
-    if (user) {
+    if (!user) return;
+    if (hasCompletedProfile) {
       navigate('/nearby', { replace: true });
+    } else {
+      navigate('/onboarding/profile', { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, hasCompletedProfile, navigate]);
 
-  if (authLoading || user) {
+  if (authLoading || profileLoading || user) {
     return <div className="min-h-screen" style={{ backgroundColor: '#fdf8f0' }} />;
   }
 
