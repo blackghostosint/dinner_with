@@ -546,9 +546,85 @@ Create seed data and demo prep:
 - Includes live app URL, demo credentials, thank you to Marcin Teodoru + Sabrina Ramonov
 - Tech stack and setup instructions retained but secondary to the story
 
-## Current blockers & next steps
+### Foursquare + restaurant data (Mar 7 2026)
+- **Foursquare Places API v3 integrated**: `useRestaurants` hook runs Supabase + Foursquare in parallel via `Promise.allSettled`; merges and deduplicates by ID; caches results by lat/lng via `useRef`
+- **Distance filter**: `MAX_DISTANCE_MILES = 15` — seeded Portland restaurants no longer appear on Ohio user maps
+- **Foursquare 401 issue**: API key (`fsq3...`) correctly set in `.env` and Netlify, but requests returning 401. Root cause: Foursquare developer project missing required URL and privacy policy fields. Workaround: 10 sit-down restaurants near Euclid/Willoughby/Mentor Ohio seeded directly into Supabase `restaurants` table
+- **Foursquare errors silenced**: Failed Foursquare requests log to `console.warn` only — seeded data loads normally, no error shown to users
 
-- **End-to-end test**: Full flow on live site — sign up → onboarding → nearby → invite → accept → phone share
-- **Reset demo data**: Clear test invitations before recording demo video
-- **Demo video**: 2-minute walkthrough required for submission (Day 3)
-- **Submission post**: Written post required for hackathon entry (Day 3)
+### Auth + routing fixes (Mar 7 2026)
+- **ProtectedRoute profile guard**: Redirects to `/onboarding/profile` if `hasCompletedProfile` is false; `skipProfileCheck` prop used for the onboarding page itself
+- **hasCompletedProfile race condition** (critical bug fixed): On page refresh, `useProfile(undefined)` ran before auth resolved, setting `loading = false` and `profile = null`. ProtectedRoute fired the redirect before the real profile fetch could complete. Fixed with `fetchedForRef` — tracks which `userId` the last completed fetch was for; `effectiveLoading` stays true during the one-render gap between auth resolving and the effect running
+- **hasCompletedProfile logic**: `Boolean(profile?.profile_completed_at)` — falls back gracefully for accounts created before the field existed
+- **NavLink active states**: BottomNav uses `NavLink` for SPA-aware active styling with `isActive` class switching
+
+### Tests (Mar 7 2026)
+- **Vitest + React Testing Library**: 6 tests across 3 files — `App.test.jsx`, `AuthFlow.test.jsx`, `NearbyPage.test.jsx` — all passing
+- Tests run before every commit as a gate
+
+### UX + polish (Mar 7–8 2026)
+- **Page transitions**: `framer-motion` `AnimatePresence` wraps all routes; initially 16px slide + scale (jarring); replaced with pure 180ms opacity crossfade (`mode="sync"`) — smooth and unobtrusive
+- **Toast notifications**: `ToastContext` with `role="status"` + `aria-live="polite"` — auto-dismiss at 3.2s; used for invitation confirmation and phone sharing
+- **Confetti on accept**: `canvas-confetti` fires when a guest accepts an invitation, with partner name in toast
+- **Phone number normalization**: `normalizePhone()` in `utils.js` formats input to `XXX-XXX-XXXX` as user types; applied to phone fields in onboarding and profile edit
+- **Amber spinner**: Replaced "Loading auth…" text in `ProtectedRoute` with centered `animate-spin` amber ring on cream background
+- **Trust banner**: Simplified to "Dinner with... is about sharing a table — not charity."
+
+### Accessibility (Mar 8 2026)
+- **ARIA throughout**: `aria-live="polite"` on all dynamic status/feedback; `role="alert"` on errors; `role="tablist/tab/tabpanel"` + `aria-selected` on Invitations tabs; `aria-pressed` on toggles and role cards; `aria-label` on all ambiguous buttons
+- **Decorative elements hidden**: `aria-hidden="true"` on initials avatars, step numbers, icons
+- **Semantic HTML**: `role="article"` on UserCard/InviteCard; `role="note"` on TrustBanner; `role="region"` on MapView; `ol/li` for How It Works; `ul/li` for stat tiles; `aria-label="Main navigation"` on BottomNav
+- **Focus rings**: `:focus-visible { outline: 3px solid #F59E0B; outline-offset: 3px }` — visible keyboard navigation across the whole app
+- **Screen reader map guidance**: MapView label directs screen reader users to List view as the accessible alternative
+
+### Final polish (Mar 8 2026)
+- **Per-page document titles**: `useDocumentTitle` hook — each page sets `<Page> | Dinner with...`; UserProfile shows person's name; CreateInvite shows guest name
+- **OG + Twitter Card meta tags**: `index.html` includes `og:title`, `og:description`, `og:image`, `twitter:card` — link previews work when shared in Slack/Discord
+- **Welcome page restructure**: Sign-in card moved above "Get started" button; top "Get started" button removed; bottom button restyled to `slate-800` with `amber-300` text to contrast the amber "Not charity" block below it; moved above "Not charity" block
+- **Password placeholder**: Simplified from "Password (or leave blank for magic link)" to "Password"
+- **Guest empty state**: "A host near you will reach out soon. People are browsing the community right now." — warm and mission-aligned
+- **Host empty state**: "Head to Nearby to find someone and send your first dinner invite."
+- **autoComplete attributes**: `email` and `current-password` on sign-in inputs
+- **`.gitignore`**: AI tool directories added (`.claude/`, `.adal/`, etc.); `skills/`, `skills-lock.json`, `*.png`
+
+### Known issues + resolutions
+| Issue | Status | Resolution |
+|---|---|---|
+| Foursquare 401 | Unresolved | Foursquare project missing URL/privacy fields. Ohio restaurants seeded as fallback |
+| Map showing San Francisco | Fixed | Profile had city/state but no lat/lng. Nominatim forward geocoding added on profile save |
+| PWA blank screen on Android | Fixed | Service worker cached stale JS bundles. Bumped cache to v3, network-first HTML, skipWaiting |
+| PWA install prompt not showing | Fixed | `event.preventDefault()` suppressed native Android prompt. Removed |
+| ProtectedRoute redirect loop on refresh | Fixed | Race condition in useProfile — fetchedForRef pattern prevents premature redirect |
+| Map overlapping BottomNav on mobile | Fixed | Layout pb-10 → pb-28; map height 45vh |
+| Phone numbers exposed in network tab | Fixed | useNearby changed from `select('*')` to explicit field list excluding phone |
+| AI tool directories committed | Fixed | Unstaged, .gitignore updated, only relevant files re-added |
+| Page transitions jarring | Fixed | Replaced slide+scale with pure 180ms opacity crossfade |
+
+---
+
+## Current status (Mar 8 2026)
+
+### ✅ Completed
+- [x] Full sign-up / onboarding flow (Role → Sign Up → Profile)
+- [x] Nearby map + list view with live user data
+- [x] Restaurant picker (seeded + Foursquare integration)
+- [x] Full invitation flow (send → accept/decline → cancel)
+- [x] Phone number privacy + consent-based sharing
+- [x] Safety reporting
+- [x] Profile edit with location detection
+- [x] PWA (installable, service worker, manifest)
+- [x] Deployed to Netlify with CI/CD
+- [x] GitHub public repo
+- [x] Accessibility (ARIA, focus rings, semantic HTML)
+- [x] Page transitions, toasts, confetti
+- [x] Per-page document titles
+- [x] OG meta tags for link sharing
+- [x] 6/6 tests passing
+- [x] README rewritten with mission story
+
+### 🔲 Remaining (Day 3)
+- [ ] Clear demo data (SQL: DELETE FROM invitations WHERE demo accounts)
+- [ ] Create fresh pending invitation (demohost → demoguest) for judges
+- [ ] Record 2-minute demo video
+- [ ] Write and submit hackathon post
+- [ ] **Hard deadline: 12:00 PM ET Mar 8 2026**
