@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import Layout from '../components/Layout.jsx';
 import RoleCard from '../components/RoleCard.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 const roles = [
   {
@@ -19,6 +20,7 @@ const roles = [
 export default function OnboardingRole() {
   const [selected, setSelected] = useState('host');
   const navigate = useNavigate();
+  useDocumentTitle('Choose Your Role');
 
   const current = useMemo(() => roles.find((entry) => entry.role === selected), [selected]);
 

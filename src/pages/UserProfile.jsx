@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase.js';
 import { useAuth } from '../hooks/useAuth.js';
 import { useProfile } from '../hooks/useProfile.js';
 import { haversineDistance, formatDistance } from '../lib/utils.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export default function UserProfile() {
   const { id } = useParams();
@@ -15,6 +16,7 @@ export default function UserProfile() {
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState('');
   const [reportSent, setReportSent] = useState(false);
+  useDocumentTitle(person ? person.name : 'Profile');
 
   const distance = useMemo(() => {
     const myLat = parseFloat(currentProfile?.lat);

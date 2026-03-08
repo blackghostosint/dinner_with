@@ -6,6 +6,7 @@ import { useProfile } from '../hooks/useProfile.js';
 import { useRestaurants } from '../hooks/useRestaurants.js';
 import { supabase } from '../lib/supabase.js';
 import { formatDistance } from '../lib/utils.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export default function RestaurantPicker() {
   const [searchParams] = useSearchParams();
@@ -27,6 +28,7 @@ export default function RestaurantPicker() {
     [restaurants],
   );
 
+  useDocumentTitle('Pick a Restaurant');
   const [guestName, setGuestName] = useState('');
   useEffect(() => {
     if (!guestId || !supabase) return;

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
 import { useAuth } from '../hooks/useAuth.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export default function OnboardingSignUp() {
   const [searchParams] = useSearchParams();
@@ -16,6 +17,7 @@ export default function OnboardingSignUp() {
     return null;
   }
 
+  useDocumentTitle('Create Account');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);

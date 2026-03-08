@@ -4,6 +4,7 @@ import Layout from '../components/Layout.jsx';
 import { useAuth } from '../hooks/useAuth.js';
 import { upsertProfile } from '../hooks/useProfile.js';
 import { detectLocation, normalizePhone } from '../lib/utils.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export default function OnboardingProfile() {
   const [searchParams] = useSearchParams();
@@ -20,6 +21,7 @@ export default function OnboardingProfile() {
     lng: null,
   });
   const role = searchParams.get('role') ?? 'guest';
+  useDocumentTitle('Your Profile');
   const locationText = useMemo(() => {
     if (formValues.city || formValues.state) {
       return `Detected: ${formValues.city || 'City'}, ${formValues.state || 'State'}`;

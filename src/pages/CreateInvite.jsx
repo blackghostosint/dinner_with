@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
 import { useAuth } from '../hooks/useAuth.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export default function CreateInvite() {
   const [searchParams] = useSearchParams();
@@ -17,6 +18,7 @@ export default function CreateInvite() {
 
   const guestId = searchParams.get('guestId');
   const restaurantId = searchParams.get('restaurantId');
+  useDocumentTitle(guestName ? `Invite ${guestName}` : 'Send an Invite');
 
   useEffect(() => {
     if (!supabase) return;

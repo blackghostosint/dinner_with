@@ -4,6 +4,7 @@ import BottomNav from '../components/BottomNav.jsx';
 import { useAuth } from '../hooks/useAuth.js';
 import { useProfile, upsertProfile } from '../hooks/useProfile.js';
 import { detectLocation, normalizePhone } from '../lib/utils.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export default function ProfileEdit() {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ export default function ProfileEdit() {
   });
   const [feedback, setFeedback] = useState('');
   const [locationStatus, setLocationStatus] = useState('idle');
+  useDocumentTitle('Edit Profile');
 
   const handleLoc = () => {
     detectLocation(

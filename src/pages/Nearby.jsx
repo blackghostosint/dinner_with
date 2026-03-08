@@ -8,6 +8,7 @@ import { useAuth } from '../hooks/useAuth.js';
 import { useNearby } from '../hooks/useNearby.js';
 import { useProfile } from '../hooks/useProfile.js';
 import { useRestaurants } from '../hooks/useRestaurants.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export default function Nearby() {
   const { user, loading: authLoading } = useAuth();
@@ -26,6 +27,7 @@ export default function Nearby() {
   });
   const [viewMode, setViewMode] = useState('map');
   const navigate = useNavigate();
+  useDocumentTitle('People Nearby');
 
   const mapCenter = useMemo(() => {
     if (homeLocation) {

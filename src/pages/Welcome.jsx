@@ -3,6 +3,7 @@ import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 export default function Welcome() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,8 @@ export default function Welcome() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const howItWorksRef = useRef(null);
+
+  useDocumentTitle('Welcome');
 
   if (user) {
     navigate('/nearby', { replace: true });

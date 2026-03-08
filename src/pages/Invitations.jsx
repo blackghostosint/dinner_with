@@ -3,17 +3,21 @@ import Layout from '../components/Layout.jsx';
 import InviteCard from '../components/InviteCard.jsx';
 import BottomNav from '../components/BottomNav.jsx';
 import { useAuth } from '../hooks/useAuth.js';
+import { useProfile } from '../hooks/useProfile.js';
 import { useInvitations } from '../hooks/useInvitations.js';
 import { useToast } from '../context/ToastContext.jsx';
 import confetti from 'canvas-confetti';
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js';
 
 const TABS = ['pending', 'accepted', 'declined', 'cancelled'];
 
 export default function Invitations() {
   const { user } = useAuth();
+  const { profile } = useProfile(user?.id);
   const { invitations, loading, updateStatus, sharePhone } = useInvitations(user?.id);
   const [activeTab, setActiveTab] = useState('pending');
   const { addToast } = useToast();
+  useDocumentTitle('Dinner Plans');
 
   const handleStatus = async (invite, status) => {
     try {
@@ -81,7 +85,11 @@ export default function Invitations() {
           <div className="rounded-2xl border-2 border-dashed border-amber-100 bg-white p-8 text-center">
             <p className="text-base font-semibold text-slate-700">No {activeTab} invitations</p>
             <p className="mt-1 text-sm text-slate-400">
-              {activeTab === 'pending' ? 'Invitations you send or receive will appear here.' : 'Nothing here yet.'}
+              {activeTab === 'pending' && profile?.role === 'guest'
+                ? 'A host near you will reach out soon. People are browsing the community right now.'
+                : activeTab === 'pending' && profile?.role === 'host'
+                ? 'Head to Nearby to find someone and send your first dinner invite.'
+                : 'Nothing here yet.'}
             </p>
           </div>
         )}

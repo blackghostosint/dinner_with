@@ -53,3 +53,10 @@ h3 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Visible focus rings for keyboard navigation */
+:focus-visible {
+  outline: 3px solid #F59E0B;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
