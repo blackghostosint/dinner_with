@@ -75,7 +75,7 @@ export default function Welcome() {
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   className="flex-1 rounded-2xl border-2 border-amber-200 bg-white px-4 py-3 text-base focus:outline-none focus:border-amber-400 transition-colors duration-200"
-                  placeholder="Password (or leave blank for magic link)"
+                  placeholder="Password"
                   autoComplete="current-password"
                 />
                 <button
