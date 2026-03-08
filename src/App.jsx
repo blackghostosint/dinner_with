@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'framer-motion';
 import { useEffect } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.js';
 import { useProfile } from './hooks/useProfile.js';
 import CreateInvite from './pages/CreateInvite.jsx';
