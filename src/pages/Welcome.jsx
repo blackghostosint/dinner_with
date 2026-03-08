@@ -50,38 +50,8 @@ export default function Welcome() {
           <p className="text-xl leading-relaxed text-slate-600 max-w-xl">
             Turning strangers into neighbors, one dinner at a time. Host families invite guests from their community to a local restaurant — offering conversation, warmth, and a seat at the table.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => navigate('/onboarding/role')}
-              className="min-h-[44px] rounded-2xl bg-amber-500 px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 hover:shadow-amber-300 cursor-pointer"
-            >
-              Get started
-            </button>
-            <button
-              onClick={() => howItWorksRef.current?.scrollIntoView({ behavior: 'smooth' })}
-              className="min-h-[44px] rounded-2xl border-2 border-slate-200 bg-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-slate-600 transition-all duration-200 hover:border-amber-300 hover:text-amber-600 cursor-pointer"
-            >
-              How it works
-            </button>
-          </div>
-        </div>
 
-        {/* Stat tiles */}
-        <ul className="grid gap-3 sm:grid-cols-3 pb-12 border-b border-amber-100 list-none p-0">
-          {[
-            { label: "Who it's for", value: 'Seniors, newcomers, anyone eating alone.' },
-            { label: 'Radius', value: 'Within 10 miles' },
-            { label: 'The host pays', value: 'The meal is on the host.' },
-          ].map((tile) => (
-            <li key={tile.label} className="rounded-2xl border border-amber-100 bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.4em] text-amber-500">{tile.label}</p>
-              <p className="mt-2 text-base font-semibold text-slate-900 leading-snug">{tile.value}</p>
-            </li>
-          ))}
-        </ul>
-
-        {/* Sign in */}
-        <div className="py-12 border-b border-amber-100">
+          {/* Sign in */}
           <div className="rounded-3xl border-2 border-amber-300 bg-amber-50 p-8 shadow-lg shadow-amber-100 text-center">
             <p className="text-xs uppercase tracking-[0.4em] text-amber-500 mb-2">Already a member?</p>
             <h2 className="text-slate-900 mb-6">Sign in to your account</h2>
@@ -120,7 +90,36 @@ export default function Welcome() {
               {feedback && <p role="status" aria-live="polite" className="mt-1 text-slate-500">{feedback}</p>}
             </form>
           </div>
+
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => navigate('/onboarding/role')}
+              className="min-h-[44px] rounded-2xl bg-amber-500 px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 hover:shadow-amber-300 cursor-pointer"
+            >
+              Get started
+            </button>
+            <button
+              onClick={() => howItWorksRef.current?.scrollIntoView({ behavior: 'smooth' })}
+              className="min-h-[44px] rounded-2xl border-2 border-slate-200 bg-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-slate-600 transition-all duration-200 hover:border-amber-300 hover:text-amber-600 cursor-pointer"
+            >
+              How it works
+            </button>
+          </div>
         </div>
+
+        {/* Stat tiles */}
+        <ul className="grid gap-3 sm:grid-cols-3 pb-12 border-b border-amber-100 list-none p-0">
+          {[
+            { label: "Who it's for", value: 'Seniors, newcomers, anyone eating alone.' },
+            { label: 'Radius', value: 'Within 10 miles' },
+            { label: 'The host pays', value: 'The meal is on the host.' },
+          ].map((tile) => (
+            <li key={tile.label} className="rounded-2xl border border-amber-100 bg-white p-5 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.4em] text-amber-500">{tile.label}</p>
+              <p className="mt-2 text-base font-semibold text-slate-900 leading-snug">{tile.value}</p>
+            </li>
+          ))}
+        </ul>
 
         {/* How it works */}
         <div ref={howItWorksRef} className="py-12 space-y-8">
