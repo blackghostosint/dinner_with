@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Layout from '../components/Layout.jsx';
 import { supabase } from '../lib/supabase.js';
 import { useNavigate } from 'react-router-dom';
@@ -11,14 +11,19 @@ export default function Welcome() {
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const howItWorksRef = useRef(null);
 
   useDocumentTitle('Welcome');
 
-  if (user) {
-    navigate('/nearby', { replace: true });
-    return null;
+  useEffect(() => {
+    if (user) {
+      navigate('/nearby', { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (authLoading || user) {
+    return <div className="min-h-screen" style={{ backgroundColor: '#fdf8f0' }} />;
   }
 
   const handleSignIn = async (event) => {

@@ -1,9 +1,13 @@
 import React from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Welcome from '../pages/Welcome.jsx';
 import { haversineDistance } from '../lib/utils.js';
 import { MemoryRouter } from 'react-router-dom';
+
+vi.mock('../hooks/useAuth.js', () => ({
+  useAuth: () => ({ user: null, session: null, loading: false }),
+}));
 
 if (typeof window !== 'undefined' && !window.scrollTo) {
   window.scrollTo = () => {};

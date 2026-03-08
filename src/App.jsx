@@ -29,10 +29,14 @@ function ProtectedRoute({ children, skipProfileCheck = false }) {
     }
   }, [authLoading, profileLoading, user, skipProfileCheck, hasCompletedProfile, navigate]);
 
-  const blank = <div className="min-h-screen" style={{ backgroundColor: '#fdf8f0' }} />;
+  const spinner = (
+    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fdf8f0' }}>
+      <div className="h-10 w-10 animate-spin rounded-full border-4 border-amber-200 border-t-amber-500" aria-label="Loading" role="status" />
+    </div>
+  );
 
-  if (authLoading || profileLoading) return blank;
-  if (!user || (!skipProfileCheck && !hasCompletedProfile)) return blank;
+  if (authLoading || profileLoading) return spinner;
+  if (!user || (!skipProfileCheck && !hasCompletedProfile)) return <div className="min-h-screen" style={{ backgroundColor: '#fdf8f0' }} />;
   return children;
 }
 
