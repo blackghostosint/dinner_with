@@ -12,9 +12,9 @@ window.onerror = (message, _source, lineno, colno, error) => {
   logError(error ?? new Error(String(message)), 'global', { lineno, colno });
 };
 
-window.onunhandledrejection = (event) => {
+window.addEventListener('unhandledrejection', (event) => {
   logError(event.reason ?? new Error('Unhandled promise rejection'), 'promise');
-};
+});
 
 const container = document.getElementById('root');
 
