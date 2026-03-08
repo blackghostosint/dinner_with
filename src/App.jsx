@@ -19,7 +19,11 @@ function ProtectedRoute({ children, skipProfileCheck = false }) {
   const { hasCompletedProfile, loading: profileLoading } = useProfile(user?.id);
 
   if (authLoading || profileLoading) {
-    return <div className="flex justify-center py-10 text-sm text-slate-500">Loading auth…</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fdf8f0' }}>
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-amber-200 border-t-amber-500" aria-label="Loading" role="status" />
+      </div>
+    );
   }
   if (!user) {
     return <Navigate to="/" replace />;
