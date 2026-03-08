@@ -93,12 +93,6 @@ export default function Welcome() {
 
           <div className="flex flex-wrap gap-3">
             <button
-              onClick={() => navigate('/onboarding/role')}
-              className="min-h-[44px] rounded-2xl bg-amber-500 px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 hover:shadow-amber-300 cursor-pointer"
-            >
-              Get started
-            </button>
-            <button
               onClick={() => howItWorksRef.current?.scrollIntoView({ behavior: 'smooth' })}
               className="min-h-[44px] rounded-2xl border-2 border-slate-200 bg-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-slate-600 transition-all duration-200 hover:border-amber-300 hover:text-amber-600 cursor-pointer"
             >
