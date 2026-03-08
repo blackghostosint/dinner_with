@@ -136,17 +136,17 @@ export default function Welcome() {
             ))}
           </ol>
 
+          <button
+            onClick={() => navigate('/onboarding/role')}
+            className="w-full min-h-[52px] rounded-2xl bg-slate-800 py-4 text-sm font-semibold uppercase tracking-[0.3em] text-amber-300 shadow-lg transition-all duration-200 hover:bg-slate-700 cursor-pointer"
+          >
+            Get started — it's free
+          </button>
+
           <div className="rounded-2xl bg-amber-500 p-6 text-white">
             <p className="text-lg font-semibold">Not charity. Not dating. Just a shared table.</p>
             <p className="mt-2 text-sm leading-relaxed text-amber-50">Every night, millions of people eat alone — elderly, recently widowed, new to the city, or simply without company. Dinner with... gives everyone a seat at the table.</p>
           </div>
-
-          <button
-            onClick={() => navigate('/onboarding/role')}
-            className="w-full min-h-[52px] rounded-2xl bg-amber-500 py-4 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg shadow-amber-200 transition-all duration-200 hover:bg-amber-600 cursor-pointer"
-          >
-            Get started — it's free
-          </button>
         </div>
 
       </div>
