@@ -19,13 +19,13 @@ export default function Welcome() {
   useDocumentTitle('Welcome');
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || profileLoading) return;
     if (hasCompletedProfile) {
       navigate('/nearby', { replace: true });
     } else {
       navigate('/onboarding/profile', { replace: true });
     }
-  }, [user, hasCompletedProfile, navigate]);
+  }, [user, profileLoading, hasCompletedProfile, navigate]);
 
   if (authLoading || profileLoading || user) {
     return <div className="min-h-screen" style={{ backgroundColor: '#fdf8f0' }} />;
